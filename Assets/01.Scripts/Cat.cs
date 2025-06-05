@@ -7,7 +7,6 @@ public class Cat : MonoBehaviour
     [SerializeField] private float posX = 2.3f;
     [SerializeField] private float posY = -4.45f;
     [SerializeField] private int swappingSpeed = 2;
-    [SerializeField] private int forcePower = 10;
 
     private Animator animator;
     private Tween swappingTween;
@@ -37,19 +36,24 @@ public class Cat : MonoBehaviour
         swappingTween.Pause();
         animator.SetTrigger("Jump");
         
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.AddForce(Vector2.up * forcePower, ForceMode2D.Impulse);
+        transform.DOMoveY(0, 1f).OnComplete(() =>
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        });
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        if (rb.bodyType == RigidbodyType2D.Kinematic) return;
+        if (collision.gameObject.CompareTag("Floor")||collision.gameObject.CompareTag("Cat"))
         {
-            animator.SetTrigger("Land");
             isJumpping = false;
+            animator.SetTrigger("Land");
             OnNextCatCallback?.Invoke();
             OnNextCatCallback = null;
             rb.bodyType = RigidbodyType2D.Kinematic;
+            GameManager.Instance.cats.Add(this);
+            GameManager.Instance.DownCats();
         }
     }
 }

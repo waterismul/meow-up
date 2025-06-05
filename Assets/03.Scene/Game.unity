@@ -286,6 +286,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   catPrefab: {fileID: 5302965254976216222, guid: 22f78291977c6bb4e817019eb7d52887, type: 3}
+  downY: 0
+  floorObj: {fileID: 1941745239}
+  cats: []
 --- !u!4 &919992314
 Transform:
   m_ObjectHideFlags: 0
@@ -383,7 +386,7 @@ Transform:
   m_GameObject: {fileID: 1941745239}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.5, z: 0}
+  m_LocalPosition: {x: 0, y: -3, z: 0}
   m_LocalScale: {x: 6, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
