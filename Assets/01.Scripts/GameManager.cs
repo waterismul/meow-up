@@ -7,7 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Cat catPrefab;
     [SerializeField] private GameObject floorObj;
-    private float _downY;
+    [SerializeField] private float _downY;
     private Cat _catPrefabObj;
     public List<Cat> cats;
     
@@ -16,12 +16,10 @@ public class GameManager : Singleton<GameManager>
         cats = new List<Cat>();
         
         SpawnCat();
-
-        //_downY = catPrefab.GetComponent<SpriteRenderer>().bounds.size.y;
+        
+        _downY = 0.86f;
     }
-
     
-
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -41,10 +39,10 @@ public class GameManager : Singleton<GameManager>
 
     public void DownCats()
     {
-        if (cats.Count < 3) return;
+        if (cats.Count < 5) return;
         foreach (var cat in cats)
         {
-            cat.transform.position -= new Vector3(0, _downY, 0);
+           cat.transform.position -= new Vector3(0, _downY, 0);
         }
         
         floorObj.transform.position -= new Vector3(0, _downY, 0);

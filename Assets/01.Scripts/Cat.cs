@@ -51,7 +51,9 @@ public class Cat : MonoBehaviour
             animator.SetTrigger("Land");
             OnNextCatCallback?.Invoke();
             OnNextCatCallback = null;
+            
             rb.bodyType = RigidbodyType2D.Kinematic;
+            
             GameManager.Instance.cats.Add(this);
             GameManager.Instance.DownCats();
         }
