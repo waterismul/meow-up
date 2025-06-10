@@ -12,8 +12,26 @@ public class Cat : MonoBehaviour
     private Tween swappingTween;
     private bool isJumpping;
     private Rigidbody2D rb;
+    private ObjectPoolManager pool;
+    private GameManager gm;
 
     private event Action OnNextCatCallback;
+
+    private void Start()
+    {
+        pool = ObjectPoolManager.Instance;
+        gm = GameManager.Instance;
+        gm.cats.Add(this);
+        Debug.Log($"list 개수 : {gm.cats.Count}");
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < -6f)
+        {
+            ReturnPoolSpawnCat();
+        }
+    }
 
     public void Init(Action onNextCatCallback)
     {
@@ -45,7 +63,7 @@ public class Cat : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (rb.bodyType == RigidbodyType2D.Kinematic) return;
-        if (collision.gameObject.CompareTag("Floor")||collision.gameObject.CompareTag("Cat"))
+        if ((gm.cats.Count==1 && collision.gameObject.CompareTag("Floor"))||(gm.cats.Count>1 && collision.gameObject.CompareTag("Cat")))
         {
             isJumpping = false;
             animator.SetTrigger("Land");
@@ -53,9 +71,38 @@ public class Cat : MonoBehaviour
             OnNextCatCallback = null;
             
             rb.bodyType = RigidbodyType2D.Kinematic;
+           
+            UpdateCatColliders();
+            gm.DownCats();
+        }
+        else
+        {
+            ReturnPoolSpawnCat();
+            gm.cats.Remove(this);
+        }
             
-            GameManager.Instance.cats.Add(this);
-            GameManager.Instance.DownCats();
+    }
+    
+    private void UpdateCatColliders()
+    {
+        if (gm.cats.Count is 1 or 2) return;
+        
+        for (int i = 0; i < gm.cats.Count; i++)
+        {
+            Collider2D col = gm.cats[i].GetComponent<Collider2D>();
+            if (i > gm.cats.Count - 2)
+                col.enabled = true;
+            else
+                col.enabled = false;
         }
     }
+
+    private void ReturnPoolSpawnCat()
+    {
+        OnNextCatCallback?.Invoke();
+        OnNextCatCallback = null;
+        pool.ReturnPrefabObj(gameObject, pool.catPrefabObjQueue);
+        gm.cats.Remove(this);
+    }
+
 }

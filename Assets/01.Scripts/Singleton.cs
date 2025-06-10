@@ -10,7 +10,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
         {
             if (_instance == null)
             {
-                Debug.LogError(typeof(T).Name + " is not initialized. Make sure it exists in the scene.");
+                Debug.LogError(typeof(T).Name+"초기화 null");
             }
             return _instance;
         }

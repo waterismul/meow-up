@@ -5,15 +5,16 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private Cat catPrefab;
     [SerializeField] private GameObject floorObj;
     [SerializeField] private float _downY;
-    private Cat _catPrefabObj;
-    public List<Cat> cats;
+    private GameObject _catPrefabObj;
+    private Cat _catPrefabObjScript;
+    private ObjectPoolManager pool;
+    public List<Cat> cats = new List<Cat>();
     
     private void Start()
     {
-        cats = new List<Cat>();
+        pool = ObjectPoolManager.Instance;
         
         SpawnCat();
         
@@ -24,16 +25,16 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            _catPrefabObj.Jumpping();
+            _catPrefabObjScript.Jumpping();
         }
     }
 
     private void SpawnCat()
     {
-        _catPrefabObj = Instantiate(catPrefab);
-        
-        _catPrefabObj.Init(SpawnCat);
-        _catPrefabObj.Swapping();
+        _catPrefabObj = pool.GetPrefabObj(pool.catPrefabObjQueue, pool.catPrefabObj, pool.catPrefabObjParent);
+        _catPrefabObjScript = _catPrefabObj.GetComponent<Cat>();
+        _catPrefabObjScript.Init(SpawnCat);
+        _catPrefabObjScript.Swapping();
 
     }
 
