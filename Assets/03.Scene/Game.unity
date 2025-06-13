@@ -1037,7 +1037,7 @@ MonoBehaviour:
   downY: 0
   gaugeTop: {fileID: 2022132678}
   maxLife: 5
-  maxTime: 30
+  maxTime: 3000
 --- !u!4 &919992314
 Transform:
   m_ObjectHideFlags: 0

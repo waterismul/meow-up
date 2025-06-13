@@ -10,6 +10,7 @@ public class Cat : MonoBehaviour
     [SerializeField] private float posX = 2.3f;
     [SerializeField] private float posY = -4.45f;
     [SerializeField] private int swappingSpeed = 1;
+    [SerializeField] private float jumpSpeed = 0.5f;
 
     private Animator animator;
     private Tween swappingTween;
@@ -39,7 +40,6 @@ public class Cat : MonoBehaviour
             pool.ReturnPrefabObj(gameObject, pool.catPrefabObjQueue);
             gm.cats.Remove(this);
         }
-            
     }
 
     public void Init(Action onNextCatCallback)
@@ -57,7 +57,7 @@ public class Cat : MonoBehaviour
             .SetLoops(-1, LoopType.Yoyo)
             .From(-posX);
     }
-    
+
     public void Jumping()
     {
         if (isJumping) return;
@@ -65,39 +65,40 @@ public class Cat : MonoBehaviour
 
         swappingTween?.Pause();
         swappingTween?.Kill();
-        
+
         animator.SetTrigger("Jump");
 
-        transform.DOMoveY(0, 1f).OnComplete(() => { rb.bodyType = RigidbodyType2D.Dynamic; });
+        transform.DOMoveY(0, jumpSpeed).SetEase(Ease.InOutQuad)
+            .OnComplete(() => { rb.bodyType = RigidbodyType2D.Dynamic; });
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (rb.bodyType == RigidbodyType2D.Kinematic) return;
-        
         if ((gm.cats.Count == 0 && collision.gameObject.CompareTag("Floor")) ||
-            (gm.cats.Count > 0 && collision.gameObject.CompareTag("Cat")))
+            (gm.cats.Count > 0 && collision.gameObject.CompareTag("Cat") 
+                               && collision.contacts[0].normal.y >= 1f))
         {
             rb.bodyType = RigidbodyType2D.Kinematic;
             animator.SetTrigger("Land");
+
             gm.cats.Add(this);
-            
+
             gm.catCount += 1;
-            
+
             Debug.Log(gm.cats.Count);
-            
+
             UpdateCatColliders();
 
             if (gm.cats.Count > 4)
             {
                 StartCoroutine(gm.DownCats());
             }
-            
+
             OnNextCatCallback?.Invoke();
             OnNextCatCallback = null;
-            
         }
-        else
+        else if (transform.position.y<-6f || collision.gameObject.CompareTag("Floor"))
         {
             gm.DecreaseLife();
             pool.ReturnPrefabObj(gameObject, pool.catPrefabObjQueue);
@@ -112,16 +113,16 @@ public class Cat : MonoBehaviour
 
         for (int i = 0; i < gm.cats.Count; i++)
         {
-            Collider2D col = gm.cats[i].GetComponent<BoxCollider2D>();
-            
-            if (i == gm.cats.Count - 1) 
-                col.enabled = true;
-                
+            Collider2D boxColl = gm.cats[i].GetComponent<BoxCollider2D>();
+
+            if (i == gm.cats.Count - 1)
+            {
+                boxColl.enabled = true;
+            }
             else
-                col.enabled = false;
+            {
+                boxColl.enabled = false;
+            }
         }
     }
-
-
-    
 }

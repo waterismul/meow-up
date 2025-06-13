@@ -15,7 +15,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
     [SerializeField] private int maxLife=5;
-    [SerializeField] private float maxTime=30f;
+    [SerializeField] private float maxTime=3000f;
     
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
