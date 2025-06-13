@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5769d9c84430d18499dcdd21d32fff3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  catPrefabObjCount: 20
+  catPrefabObjCount: 10
   catPrefabObjParent: {fileID: 1349842609}
   catPrefabObj: {fileID: 168039568930386627, guid: 22f78291977c6bb4e817019eb7d52887, type: 3}
   fishPrefabObjCount: 5

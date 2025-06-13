@@ -43,7 +43,15 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             prefabObjQueue.Enqueue(newObj);
         }
         GameObject obj =  prefabObjQueue.Dequeue();
+        Debug.Log(obj.name);
         obj.SetActive(true);
+        
+        BoxCollider2D coll= obj.GetComponent<BoxCollider2D>();
+        coll.enabled = true;
+        
+        Rigidbody2D rb= obj.GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        
         return obj;
     }
 
