@@ -44,6 +44,7 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(0.8f);
         _catPrefabObj = pool.GetPrefabObj(pool.catPrefabObjQueue, pool.catPrefabObj, pool.catPrefabObjParent);
         _catPrefabObjScript = _catPrefabObj.GetComponent<Cat>();
+        _catPrefabObjScript.IsJumping = false;
         _catPrefabObjScript.Init(()=>StartCoroutine(SpawnCat()));
         _catPrefabObjScript.Swapping();
     }

@@ -18,7 +18,11 @@ public class Cat : MonoBehaviour
     private GameManager gm;
     private ObjectPoolManager pool;
 
-    public bool IsJumping=> isJumping;
+    public bool IsJumping
+    {
+        get { return isJumping; }
+        set { isJumping = value; }
+    }
 
     private Action OnNextCatCallback;
 
