@@ -43,7 +43,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             prefabObjQueue.Enqueue(newObj);
         }
         GameObject obj =  prefabObjQueue.Dequeue();
-        Debug.Log(obj.name);
         obj.SetActive(true);
         
         BoxCollider2D coll= obj.GetComponent<BoxCollider2D>();
