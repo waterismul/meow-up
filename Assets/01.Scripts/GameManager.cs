@@ -3,19 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
     public List<Cat> cats;
     public int catCount;
+    public Image[] life;
     
     [SerializeField] private GameObject floorObj;
     [SerializeField] private float downY;
+    [SerializeField] private Image gaugeTop;
+    [SerializeField] private int maxLife=5;
+    [SerializeField] private float maxTime=30f;
     
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private ObjectPoolManager pool;
-
+    private int _currentLife;
+    private float _currentTime;
+    private bool _isGameOver;
+   
+    
     private void Start()
     {
         catCount = 0;
@@ -24,6 +33,11 @@ public class GameManager : Singleton<GameManager>
         cats = new List<Cat>();
         pool = ObjectPoolManager.Instance;
 
+        _currentLife = maxLife;
+
+        gaugeTop.fillAmount = 1f;
+        
+        
         StartCoroutine(SpawnCat());
     }
 
@@ -34,9 +48,10 @@ public class GameManager : Singleton<GameManager>
             if (_catPrefabObjScript is null) return;
             if (!_catPrefabObjScript.IsJumping)
                 _catPrefabObjScript.Jumping();
-            
         }
-        
+
+        if(!_isGameOver)
+            UpdateTimeUI();
     }
 
     IEnumerator SpawnCat()
@@ -58,6 +73,48 @@ public class GameManager : Singleton<GameManager>
         }
 
         floorObj.transform.position -= new Vector3(0, downY, 0);
+    }
+
+    private void UpdateLifeUI()
+    {
+        Color c = life[_currentLife].color;
+        c.a = 0;
+        life[_currentLife].color = c;
+    }
+
+    private void GameOver()
+    {
+        _isGameOver = true;
+        Time.timeScale = 0;
+        Debug.Log("Game Over");
+    }
+    
+    public void DecreaseLife()
+    {
+        if (_currentLife <= 0)
+        {
+            GameOver();
+            return;
+        }
+        _currentLife--;
+        UpdateLifeUI();
+        
+        Debug.Log("currentLife : "+_currentLife);
+    }
+
+
+    private void UpdateTimeUI()
+    {
+        _currentTime += Time.deltaTime;
+
+        float ratio = Mathf.Clamp01(1f - (_currentTime / maxTime));
+        gaugeTop.fillAmount = ratio;
+
+        if (ratio <= 0f)
+        {
+            GameOver();
+        }
+
     }
     
 }

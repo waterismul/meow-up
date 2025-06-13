@@ -99,6 +99,7 @@ public class Cat : MonoBehaviour
         }
         else
         {
+            gm.DecreaseLife();
             pool.ReturnPrefabObj(gameObject, pool.catPrefabObjQueue);
             OnNextCatCallback?.Invoke();
             OnNextCatCallback = null;
