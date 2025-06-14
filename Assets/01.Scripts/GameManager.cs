@@ -12,6 +12,7 @@ public class GameManager : Singleton<GameManager>
     public Image[] life;
     
     [SerializeField] private GameObject floorObj;
+    [SerializeField] private GameObject catObj;
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
     [SerializeField] private int maxLife=5;
@@ -23,22 +24,21 @@ public class GameManager : Singleton<GameManager>
     private int _currentLife;
     private float _currentTime;
     private bool _isGameOver;
+    private BoxCollider2D _catRb;
    
     
     private void Start()
     {
         catCount = 0;
-        downY = 0.86f;
-
+        _currentLife = maxLife;
         cats = new List<Cat>();
         pool = ObjectPoolManager.Instance;
-
-        _currentLife = maxLife;
-
+        
         gaugeTop.fillAmount = 1f;
         
-        
         StartCoroutine(SpawnCat());
+
+        downY = 0.875f;
     }
 
     private void Update()
@@ -72,7 +72,9 @@ public class GameManager : Singleton<GameManager>
             cat.transform.position -= new Vector3(0, downY, 0);
         }
 
-        floorObj.transform.position -= new Vector3(0, downY, 0);
+        Color c = floorObj.GetComponent<Renderer>().material.color;
+        c.a = 0;
+        floorObj.GetComponent<Renderer>().material.color = c;
     }
 
     private void UpdateLifeUI()

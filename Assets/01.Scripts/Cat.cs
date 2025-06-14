@@ -42,6 +42,8 @@ public class Cat : MonoBehaviour
         }
     }
 
+   
+
     public void Init(Action onNextCatCallback)
     {
         OnNextCatCallback = onNextCatCallback;
@@ -98,7 +100,7 @@ public class Cat : MonoBehaviour
             OnNextCatCallback?.Invoke();
             OnNextCatCallback = null;
         }
-        else if (transform.position.y<-6f || collision.gameObject.CompareTag("Floor"))
+        else if (collision.gameObject.CompareTag("Floor"))
         {
             gm.DecreaseLife();
             pool.ReturnPrefabObj(gameObject, pool.catPrefabObjQueue);
