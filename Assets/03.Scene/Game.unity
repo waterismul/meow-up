@@ -676,7 +676,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 300, y: -6.533333}
-  m_SizeDelta: {x: 297.55, y: 76.8}
+  m_SizeDelta: {x: 0, y: 76.8}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &635456789
 MonoBehaviour:
@@ -823,6 +823,54 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1579100438}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &657849792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 657849794}
+  - component: {fileID: 657849793}
+  m_Layer: 0
+  m_Name: ItemManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &657849793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657849792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52125014545d0bd46af98df4543ad339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeObj: {fileID: 4881541995114333083}
+  pointObj: {fileID: 4881541994419806302}
+  timeBonus: 10
+  pointBonus: 10
+--- !u!4 &657849794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657849792}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &715437044
 GameObject:
@@ -1072,19 +1120,18 @@ MonoBehaviour:
   - {fileID: 1840025653}
   - {fileID: 1654170761}
   - {fileID: 173863269}
+  scoreText: {fileID: 635456789}
+  score: 0
+  countObj: {fileID: 1526419945024609873}
+  countText: {fileID: 1724293499185452638}
   floorObj: {fileID: 1941745239}
   catObj: {fileID: 168039568930386627, guid: 22f78291977c6bb4e817019eb7d52887, type: 3}
   downY: 0
   gaugeTop: {fileID: 2022132678}
   maxLife: 5
   maxTime: 120
-  timeObj: {fileID: 4881541995114333083}
-  pointObj: {fileID: 4881541994419806302}
-  scoreText: {fileID: 635456789}
-  score: 0
-  countObj: {fileID: 1526419945024609873}
-  countText: {fileID: 1724293499185452638}
   currentTime: 0
+  im: {fileID: 657849793}
 --- !u!4 &919992314
 Transform:
   m_ObjectHideFlags: 0
@@ -2753,3 +2800,4 @@ SceneRoots:
   - {fileID: 4148505757377826740}
   - {fileID: 1072000241316153079}
   - {fileID: 1072000240626836786}
+  - {fileID: 657849794}

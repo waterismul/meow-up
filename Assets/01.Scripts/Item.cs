@@ -13,4 +13,6 @@ public class Item : MonoBehaviour
         if(other.gameObject.CompareTag("Floor"))
             gameObject.SetActive(false);
     }
+    
+    
 }

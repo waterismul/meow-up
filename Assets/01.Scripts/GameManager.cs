@@ -13,6 +13,10 @@ public class GameManager : Singleton<GameManager>
     public List<Cat> cats;
     public int catCount;
     public Image[] life;
+    public TextMeshProUGUI scoreText;
+    public int score;
+    public GameObject countObj;
+    public TextMeshPro countText;
     
     [SerializeField] private GameObject floorObj;
     [SerializeField] private GameObject catObj;
@@ -20,15 +24,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Image gaugeTop;
     [SerializeField] private int maxLife=5;
     [SerializeField] private float maxTime=3000f;
-    [SerializeField] private GameObject timeObj;
-    [SerializeField] private GameObject pointObj;
     
-    
-    public TextMeshProUGUI scoreText;
-    public int score;
-    
-    public GameObject countObj;
-    public TextMeshPro countText;
     
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
@@ -37,10 +33,9 @@ public class GameManager : Singleton<GameManager>
     public float currentTime;
     private bool _isGameOver;
     private BoxCollider2D _catRb;
-    private float _timeBonus=10f;
-    private int _pointBonus=10;
-
-   
+    
+    public ItemManager im;
+    
     
     private void Start()
     {
@@ -51,8 +46,6 @@ public class GameManager : Singleton<GameManager>
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
         countObj.SetActive(false);
-        timeObj.SetActive(false);
-        pointObj.SetActive(false);
         
         StartCoroutine(SpawnCat());
         
@@ -82,9 +75,9 @@ public class GameManager : Singleton<GameManager>
         
         if(cats.Count>4 && Random.Range(0,10) <= 1)
             if(Random.Range(0,2) == 1)
-                SpawnItemTime();
+                im.SpawnItemTime();
             else
-                SpawnItemPoint();
+                im.SpawnItemPoint();
     }
     
     public IEnumerator DownCats()
@@ -99,10 +92,10 @@ public class GameManager : Singleton<GameManager>
         c.a = 0;
         floorObj.GetComponent<Renderer>().material.color = c;
         
-        if(timeObj.activeSelf)
-            timeObj.transform.position -= new Vector3(0, downY, 0);
-        if(pointObj.activeSelf)
-            pointObj.transform.position -= new Vector3(0, downY, 0);
+        if(im.timeObj.activeSelf)
+            im.timeObj.transform.position -= new Vector3(0, downY, 0);
+        if(im.pointObj.activeSelf)
+            im.pointObj.transform.position -= new Vector3(0, downY, 0);
     }
 
     private void GameOver()
@@ -116,7 +109,7 @@ public class GameManager : Singleton<GameManager>
     {
         cats.Add(currentCat.GetComponent<Cat>());
         catCount += 1;
-        score = catCount * 100;
+        score += 100;
         scoreText.text = "SCORE : "+score;
             
         countObj.transform.position = currentCat.transform.position + new Vector3(1f, 1f, transform.position.z);
@@ -125,43 +118,7 @@ public class GameManager : Singleton<GameManager>
         DOVirtual.DelayedCall(0.5f, () => { countObj.SetActive(false); });
     }
 
-    private void SpawnItemTime()
-    {
-        if (!timeObj.activeSelf)
-        {
-            var pointX = Random.Range(-1, 2);
-            timeObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
-            timeObj.SetActive(true);
-        }
-        
-    }
-
-    private void SpawnItemPoint()
-    {
-        if (!pointObj.activeSelf)
-        {
-            var pointX = Random.Range(-1, 2);
-            pointObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
-            pointObj.SetActive(true);
-        }
-    }
-
-    public void GetItemPoint()
-    {
-        score += _pointBonus;
-        OffItemTime(pointObj);
-    }
     
-    public void GetItemTime()
-    {
-        currentTime -= _timeBonus;
-        OffItemTime(timeObj);
-    }
-
-    public void OffItemTime(GameObject obj)
-    {
-        obj.SetActive(false);
-    }
     
     
     //UI

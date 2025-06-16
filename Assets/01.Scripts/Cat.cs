@@ -13,9 +13,7 @@ public class Cat : MonoBehaviour
     [SerializeField] private float posY = -4.45f;
     [SerializeField] private int swappingSpeed = 1;
     [SerializeField] private float jumpSpeed = 0.5f;
-
-   
-
+    
     private Animator animator;
     private Tween swappingTween;
     private bool isJumping;
@@ -116,12 +114,12 @@ public class Cat : MonoBehaviour
     {
         if (other.CompareTag("ItemTime") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
         {
-            gm.GetItemTime();
+            gm.im.GetItemTime();
         }
         
         if (other.CompareTag("ItemPoint") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
         {
-            gm.GetItemPoint();
+            gm.im.GetItemPoint();
         }
             
     }
