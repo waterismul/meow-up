@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Net.Sockets;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,6 +13,8 @@ public class Cat : MonoBehaviour
     [SerializeField] private float posY = -4.45f;
     [SerializeField] private int swappingSpeed = 1;
     [SerializeField] private float jumpSpeed = 0.5f;
+
+   
 
     private Animator animator;
     private Tween swappingTween;
@@ -31,6 +35,8 @@ public class Cat : MonoBehaviour
     {
         pool = ObjectPoolManager.Instance;
         gm = GameManager.Instance;
+        
+ 
     }
 
     private void Update()
@@ -83,13 +89,9 @@ public class Cat : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Kinematic;
             animator.SetTrigger("Land");
-
-            gm.cats.Add(this);
-
-            gm.catCount += 1;
-
-            Debug.Log(gm.cats.Count);
-
+            
+            gm.CountCat(gameObject);
+            
             UpdateCatColliders();
 
             if (gm.cats.Count > 4)
@@ -107,6 +109,21 @@ public class Cat : MonoBehaviour
             OnNextCatCallback?.Invoke();
             OnNextCatCallback = null;
         }
+        
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("ItemTime") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
+        {
+            gm.GetItemTime();
+        }
+        
+        if (other.CompareTag("ItemPoint") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
+        {
+            gm.GetItemPoint();
+        }
+            
     }
 
     private void UpdateCatColliders()

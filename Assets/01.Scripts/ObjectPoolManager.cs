@@ -45,8 +45,8 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         GameObject obj =  prefabObjQueue.Dequeue();
         obj.SetActive(true);
         
-        BoxCollider2D boxColl= obj.GetComponent<BoxCollider2D>();
-        boxColl.enabled = true;
+        Collider2D coll= obj.GetComponent<Collider2D>();
+        coll.enabled = true;
         
         Rigidbody2D rb= obj.GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
@@ -64,6 +64,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         base.Awake();
         catPrefabObjQueue = new Queue<GameObject>();
+        //timePrefabObjQueue = new Queue<GameObject>();
         
         //cat
         InitPool(catPrefabObjQueue, catPrefabObj, catPrefabObjCount, catPrefabObjParent);

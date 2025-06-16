@@ -129,6 +129,8 @@ MonoBehaviour:
   posY: -4.2
   swappingSpeed: 1
   jumpSpeed: 0.5
+  score: {fileID: 0}
+  scoreObj: {fileID: 0}
 --- !u!50 &2823068815797356613
 Rigidbody2D:
   serializedVersion: 5
