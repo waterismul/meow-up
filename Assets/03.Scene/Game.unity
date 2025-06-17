@@ -676,7 +676,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 300, y: -6.533333}
-  m_SizeDelta: {x: 0, y: 76.8}
+  m_SizeDelta: {x: 297.55, y: 76.8}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &635456789
 MonoBehaviour:
@@ -1129,7 +1129,7 @@ MonoBehaviour:
   downY: 0
   gaugeTop: {fileID: 2022132678}
   maxLife: 5
-  maxTime: 120
+  maxTime: 60
   currentTime: 0
   im: {fileID: 657849793}
 --- !u!4 &919992314
@@ -1463,12 +1463,6 @@ MonoBehaviour:
   catPrefabObjCount: 10
   catPrefabObjParent: {fileID: 1349842609}
   catPrefabObj: {fileID: 168039568930386627, guid: 22f78291977c6bb4e817019eb7d52887, type: 3}
-  fishPrefabObjCount: 5
-  fishPrefabObjParent: {fileID: 0}
-  fishPrefabObj: {fileID: 0}
-  timePrefabObjCount: 5
-  timePrefabObjParent: {fileID: 2001139745}
-  timePrefabObj: {fileID: 4881541994213962161, guid: a2bb3cbf0860b0643b0c7199e85f089b, type: 3}
 --- !u!4 &1579100438
 Transform:
   m_ObjectHideFlags: 0

@@ -11,7 +11,6 @@ public class Cat : MonoBehaviour
 {
     [SerializeField] private float posX = 2.3f;
     [SerializeField] private float posY = -4.45f;
-    [SerializeField] private int swappingSpeed = 1;
     [SerializeField] private float jumpSpeed = 0.5f;
     
     private Animator animator;
@@ -20,7 +19,7 @@ public class Cat : MonoBehaviour
     private Rigidbody2D rb;
     private GameManager gm;
     private ObjectPoolManager pool;
-
+    
     public bool IsJumping
     {
         get { return isJumping; }
@@ -33,8 +32,6 @@ public class Cat : MonoBehaviour
     {
         pool = ObjectPoolManager.Instance;
         gm = GameManager.Instance;
-        
- 
     }
 
     private void Update()
@@ -56,12 +53,13 @@ public class Cat : MonoBehaviour
         transform.position = new Vector3(posX, posY, transform.position.z);
     }
 
-    public void Swapping()
+    public void Swapping(float dur)
     {
-        swappingTween = transform.DOMoveX(posX, swappingSpeed)
+        swappingTween = transform.DOMoveX(posX, dur)
             .SetEase(Ease.Linear)
             .SetLoops(-1, LoopType.Yoyo)
             .From(-posX);
+        
     }
 
     public void Jumping()

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
@@ -14,7 +15,9 @@ public class ItemManager : MonoBehaviour
     {
         gm = GameManager.Instance;
         timeObj.SetActive(false);
+        timeObj.transform.localScale = Vector3.zero;
         pointObj.SetActive(false);
+        pointObj.transform.localScale = Vector3.zero;
     }
     
     public void SpawnItemTime()
@@ -24,6 +27,7 @@ public class ItemManager : MonoBehaviour
             var pointX = Random.Range(-1, 2);
             timeObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
             timeObj.SetActive(true);
+            timeObj.transform.DOScale(1f, 0.5f);
         }
         
     }
@@ -35,6 +39,7 @@ public class ItemManager : MonoBehaviour
             var pointX = Random.Range(-1, 2);
             pointObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
             pointObj.SetActive(true);
+            pointObj.transform.DOScale(1f, 0.5f);
         }
     }
 
@@ -53,6 +58,7 @@ public class ItemManager : MonoBehaviour
 
     public void OffItemTime(GameObject obj)
     {
+        obj.transform.localScale = Vector3.zero;
         obj.SetActive(false);
     }
 }

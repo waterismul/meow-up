@@ -127,10 +127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   posX: 2.3
   posY: -4.2
-  swappingSpeed: 1
+  swappingSpeed: 1.2
   jumpSpeed: 0.5
-  score: {fileID: 0}
-  scoreObj: {fileID: 0}
 --- !u!50 &2823068815797356613
 Rigidbody2D:
   serializedVersion: 5

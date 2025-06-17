@@ -11,18 +11,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     public Transform catPrefabObjParent;
     public GameObject catPrefabObj;
     
-    //fish item
-    public Queue<GameObject> fishPrefabObjQueue;
-    public int fishPrefabObjCount=5;
-    public Transform fishPrefabObjParent;
-    public GameObject fishPrefabObj;
-    
-    //time item
-    public Queue<GameObject> timePrefabObjQueue;
-    public int timePrefabObjCount=5;
-    public Transform timePrefabObjParent;
-    public GameObject timePrefabObj;
-    
     private void InitPool(Queue<GameObject> prefabObjQueue, GameObject prefabObj, int prefabObjCount, Transform prefabObjParent)
     {
         for (int i = 0; i < prefabObjCount; i++)
@@ -64,15 +52,9 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         base.Awake();
         catPrefabObjQueue = new Queue<GameObject>();
-        //timePrefabObjQueue = new Queue<GameObject>();
         
         //cat
         InitPool(catPrefabObjQueue, catPrefabObj, catPrefabObjCount, catPrefabObjParent);
         
-        //fish item
-        //InitPool(fishPrefabObjQueue, fishPrefabObj, fishPrefabObjCount, fishPrefabObjParent);
-        
-        //time item
-        //InitPool(timePrefabObjQueue, timePrefabObj, timePrefabObjCount, timePrefabObjParent);
     }
 }

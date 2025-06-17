@@ -10,8 +10,12 @@ public class Item : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Floor"))
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            gameObject.transform.localScale = Vector3.zero;
             gameObject.SetActive(false);
+        }
+            
     }
     
     

@@ -25,16 +25,17 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private int maxLife=5;
     [SerializeField] private float maxTime=3000f;
     
-    
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private ObjectPoolManager pool;
     private int _currentLife;
     public float currentTime;
     private bool _isGameOver;
-    private BoxCollider2D _catRb;
     
     public ItemManager im;
+    
+    private Level _level;
+    private int _currentLevel;
     
     
     private void Start()
@@ -46,6 +47,9 @@ public class GameManager : Singleton<GameManager>
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
         countObj.SetActive(false);
+        
+        _level = new Level();
+        _level.Init(0);
         
         StartCoroutine(SpawnCat());
         
@@ -62,6 +66,18 @@ public class GameManager : Singleton<GameManager>
 
         if(!_isGameOver)
             UpdateTimeUI();
+        
+        LevelControll();
+    }
+
+    private void LevelControll()
+    {
+        int newLevel = _level.LevelStep(catCount);
+        if (newLevel != _currentLevel)
+        {
+            _currentLevel = newLevel;
+            _level.Init(_currentLevel);
+        }
     }
 
     IEnumerator SpawnCat()
@@ -71,14 +87,23 @@ public class GameManager : Singleton<GameManager>
         _catPrefabObjScript = _catPrefabObj.GetComponent<Cat>();
         _catPrefabObjScript.IsJumping = false;
         _catPrefabObjScript.Init(()=>StartCoroutine(SpawnCat()));
-        _catPrefabObjScript.Swapping();
+        _catPrefabObjScript.Swapping(_level.CurrentSwappingDur);
         
-        if(cats.Count>4 && Random.Range(0,10) <= 1)
-            if(Random.Range(0,2) == 1)
-                im.SpawnItemTime();
-            else
-                im.SpawnItemPoint();
+        SpawnItem();
+        
     }
+
+    private void SpawnItem()
+    {
+        if (catCount > 5 && catCount % 4 == 0 && Random.Range(0, 10) >= 3)
+        {
+            if(Random.Range(0,3) == 0 )
+                im.SpawnItemPoint();
+            else
+                im.SpawnItemTime();
+        }
+    }
+    
     
     public IEnumerator DownCats()
     {
@@ -115,7 +140,10 @@ public class GameManager : Singleton<GameManager>
         countObj.transform.position = currentCat.transform.position + new Vector3(1f, 1f, transform.position.z);
         countText.text = catCount.ToString();
         countObj.SetActive(true);
-        DOVirtual.DelayedCall(0.5f, () => { countObj.SetActive(false); });
+        DOVirtual.DelayedCall(0.5f, () =>
+        {
+            countObj.SetActive(false);
+        });
     }
 
     
@@ -144,11 +172,16 @@ public class GameManager : Singleton<GameManager>
 
         float ratio = Mathf.Clamp01(1f - (currentTime / maxTime));
         gaugeTop.fillAmount = ratio;
-        
-        if(ratio<0.3f)
+
+        if (ratio < 0.3f)
+        {
             gaugeTop.GetComponent<Image>().color = new Color(1f, 0f, 0f);
+
+        }
+            
         else
         {
+            
             gaugeTop.GetComponent<Image>().color = new Color(0f, 0f, 0f);
         }
 
@@ -161,9 +194,7 @@ public class GameManager : Singleton<GameManager>
     
     private void UpdateLifeUI()
     {
-        Color c = life[_currentLife].color;
-        c.a = 0;
-        life[_currentLife].color = c;
+        life[_currentLife].transform.DOScale(0f, 0.3f);
     }
     
 }
