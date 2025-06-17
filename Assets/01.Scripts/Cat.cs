@@ -119,6 +119,11 @@ public class Cat : MonoBehaviour
         {
             gm.im.GetItemPoint();
         }
+        
+        if (other.CompareTag("ItemMinus") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
+        {
+            gm.im.GetItemMinus();
+        }
             
     }
 

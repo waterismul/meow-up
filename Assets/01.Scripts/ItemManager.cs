@@ -5,9 +5,11 @@ public class ItemManager : MonoBehaviour
 {
     public GameObject timeObj;
     public GameObject pointObj;
+    public GameObject minusObj;
     
-    [SerializeField] private float timeBonus=10f;
-    [SerializeField] private int pointBonus=10;
+    [SerializeField] private float timeBonus = 10f;
+    [SerializeField] private int pointBonus = 10;
+    [SerializeField] private int pointMinus = 20;
 
     private GameManager gm;
 
@@ -18,6 +20,8 @@ public class ItemManager : MonoBehaviour
         timeObj.transform.localScale = Vector3.zero;
         pointObj.SetActive(false);
         pointObj.transform.localScale = Vector3.zero;
+        minusObj.SetActive(false);
+        minusObj.transform.localScale = Vector3.zero;
     }
     
     public void SpawnItemTime()
@@ -42,12 +46,30 @@ public class ItemManager : MonoBehaviour
             pointObj.transform.DOScale(1f, 0.5f);
         }
     }
+    
+    public void SpawnItemMinus()
+    {
+        if (!minusObj.activeSelf)
+        {
+            var pointX = 0;
+            minusObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
+            minusObj.SetActive(true);
+            minusObj.transform.DOScale(1f, 0.5f);
+        }
+    }
 
     public void GetItemPoint()
     {
         gm.score += pointBonus;
         gm.scoreText.text = "SCORE : "+gm.score;
         OffItemTime(pointObj);
+    }
+    
+    public void GetItemMinus()
+    {
+        gm.score -= pointMinus;
+        gm.scoreText.text = "SCORE : "+gm.score;
+        OffItemTime(minusObj);
     }
     
     public void GetItemTime()

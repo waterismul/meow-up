@@ -8,6 +8,7 @@ TagManager:
   - Cat
   - ItemTime
   - ItemPoint
+  - ItemMinus
   layers:
   - Default
   - TransparentFX

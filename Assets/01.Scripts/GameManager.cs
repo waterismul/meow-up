@@ -17,6 +17,8 @@ public class GameManager : Singleton<GameManager>
     public int score;
     public GameObject countObj;
     public TextMeshPro countText;
+    public float currentTime;
+    public ItemManager im;
     
     [SerializeField] private GameObject floorObj;
     [SerializeField] private GameObject catObj;
@@ -28,14 +30,10 @@ public class GameManager : Singleton<GameManager>
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private ObjectPoolManager pool;
-    private int _currentLife;
-    public float currentTime;
     private bool _isGameOver;
-    
-    public ItemManager im;
-    
     private Level _level;
     private int _currentLevel;
+    private int _currentLife;
     
     
     private void Start()
@@ -95,12 +93,17 @@ public class GameManager : Singleton<GameManager>
 
     private void SpawnItem()
     {
-        if (catCount > 5 && catCount % 4 == 0 && Random.Range(0, 10) >= 3)
+        if (catCount == 0) return;
+        if (catCount % 4 == 0)
         {
-            if(Random.Range(0,3) == 0 )
-                im.SpawnItemPoint();
-            else
+            int rand = Random.Range(0, 6);
+            Debug.Log(rand+"======랜덤");
+            if(rand >= 3)
                 im.SpawnItemTime();
+            else if(rand is 2 or 1)
+                im.SpawnItemPoint();
+            else if(rand is 0)
+                im.SpawnItemMinus();
         }
     }
     
@@ -121,6 +124,8 @@ public class GameManager : Singleton<GameManager>
             im.timeObj.transform.position -= new Vector3(0, downY, 0);
         if(im.pointObj.activeSelf)
             im.pointObj.transform.position -= new Vector3(0, downY, 0);
+        if(im.minusObj.activeSelf)
+            im.minusObj.transform.position -= new Vector3(0, downY, 0);
     }
 
     private void GameOver()
@@ -159,8 +164,6 @@ public class GameManager : Singleton<GameManager>
         }
         _currentLife--;
         UpdateLifeUI();
-        
-        Debug.Log("currentLife : "+_currentLife);
     }
     
     
