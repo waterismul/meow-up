@@ -5,11 +5,15 @@ using UnityEngine.UI;
 public class AudioManager : Singleton<AudioManager>
 {
     [SerializeField] private AudioMixer _audioMixer;
-    [SerializeField] private AudioClip[] _sfxClips;
     [SerializeField] private AudioSource _sfxSource;
+    [SerializeField] private AudioSource _itemSource;
+    
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
     [SerializeField] private Button _saveButton;
+    
+    [SerializeField] private AudioClip[] _sfxClips;
+    [SerializeField] private AudioClip[] _itemClips;
     
     private const string BGM_KEY = "bgm";
     private const string SFX_KEY = "sfx";
@@ -54,6 +58,16 @@ public class AudioManager : Singleton<AudioManager>
         {
             _sfxSource.clip = _sfxClips[index];
             _sfxSource.Play();
+        }
+    }
+    
+    
+    public void OnItemPlay(int index)
+    {
+        if (index >= 0 && index < _sfxClips.Length)
+        {
+            _itemSource.clip = _itemClips[index];
+            _itemSource.Play();
         }
     }
 }

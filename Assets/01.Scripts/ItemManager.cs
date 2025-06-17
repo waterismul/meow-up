@@ -13,11 +13,17 @@ public class ItemManager : MonoBehaviour
 
     private GameManager gm;
     private AudioManager am;
-
+    
     private void Start()
     {
         gm = GameManager.Instance;
         am = AudioManager.Instance;
+        InitSetting();
+    }
+
+    public void InitSetting()
+    {
+        
         timeObj.SetActive(false);
         timeObj.transform.localScale = Vector3.zero;
         pointObj.SetActive(false);
@@ -43,7 +49,7 @@ public class ItemManager : MonoBehaviour
 
     public void GetItemPoint()
     {
-        am.OnSfxPlay(3);
+        am.OnItemPlay(0);
         gm.score += pointBonus;
         gm.scoreText.text = "SCORE : "+gm.score;
         OffItemTime(pointObj);
@@ -51,14 +57,14 @@ public class ItemManager : MonoBehaviour
     
     public void GetItemTime()
     {
-        am.OnSfxPlay(4);
+        am.OnItemPlay(1);
         gm.currentTime -= timeBonus;
         OffItemTime(timeObj);
     }
     
     public void GetItemMinus()
     {
-        am.OnSfxPlay(5);
+        am.OnItemPlay(2);
         gm.score -= pointMinus;
         gm.scoreText.text = "SCORE : "+gm.score;
         OffItemTime(minusObj);

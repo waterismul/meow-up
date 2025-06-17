@@ -26,36 +26,64 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
     [SerializeField] private int maxLife=5;
-    [SerializeField] private float maxTime=3000f;
+    [SerializeField] private float maxTime=60;
+    
+    [SerializeField] private TextMeshProUGUI resultText;
+    [SerializeField] private TextMeshProUGUI bestText;
     
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private ObjectPoolManager pool;
-    private bool _isGameOver;
+    public bool isGameOver;
     private Level _level;
     private int _currentLevel;
     private int _currentLife;
 
     private UIManager um;
     private AudioManager am;
-    public bool resumed; 
-    
+    public bool resumed;
+
+    private bool hasSpawnedThisRound;
+    private int bestscore;
     
     private void Start()
     {
-        catCount = 0;
-        _currentLife = maxLife;
-        cats = new List<Cat>();
         pool = ObjectPoolManager.Instance;
         um = UIManager.Instance;
         am = AudioManager.Instance;
         
+        Time.timeScale = 0f;
+    }
+
+    public void InitSetting()
+    {
+        bestscore = PlayerPrefs.GetInt("bestscore");
+        catCount = 0;
+        score = 0;
+        scoreText.text = "SCORE : "+score;
+        
+        _currentLife = maxLife;
+        cats = new List<Cat>();
+        cats.Clear();
+       
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
         countObj.SetActive(false);
         
+        currentTime = 0;
+
+        for (int i=0; i < maxLife; i++)
+        {
+            life[i].transform.localScale = Vector3.one;
+        }
+        
         _level = new Level();
         _level.Init(0);
+        
+        floorObj.transform.position = new Vector3(0, -4.56f, 0);
+        Color c = floorObj.GetComponent<Renderer>().material.color;
+        c.a = 1f;
+        floorObj.GetComponent<Renderer>().material.color = c;
         
         StartCoroutine(SpawnCat());
         
@@ -90,10 +118,12 @@ public class GameManager : Singleton<GameManager>
                 _catPrefabObjScript.Jumping();
         }
 
-        if(!_isGameOver)
+        if(!isGameOver)
             UpdateTimeUI();
         
-        LevelControll();
+        
+        if(_level !=null)
+            LevelControll();
     }
 
     private void LevelControll()
@@ -106,7 +136,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    IEnumerator SpawnCat()
+    public IEnumerator SpawnCat()
     {
         yield return new WaitForSeconds(0.8f);
         _catPrefabObj = pool.GetPrefabObj(pool.catPrefabObjQueue, pool.catPrefabObj, pool.catPrefabObjParent);
@@ -122,9 +152,9 @@ public class GameManager : Singleton<GameManager>
     private void SpawnItem()
     {
         if (catCount == 0) return;
-        if (catCount % 4 == 0)
+        if (catCount % 4 == 0 && !hasSpawnedThisRound)
         {
-            
+            hasSpawnedThisRound = true;
             int rand = Random.Range(0, 6);
             if(rand >= 3)
                 im.SpawnItem(im.timeObj);
@@ -132,8 +162,10 @@ public class GameManager : Singleton<GameManager>
                 im.SpawnItem(im.pointObj);
             else if(rand is 0)
                 im.SpawnItem(im.minusObj);
-            
-            
+        }
+        else
+        {
+            hasSpawnedThisRound = false;
         }
        
     }
@@ -161,9 +193,16 @@ public class GameManager : Singleton<GameManager>
 
     private void GameOver()
     {
-        _isGameOver = true;
-        um.PauseInit();
-        Debug.Log("Game Over");
+        isGameOver = true;
+        um.OpenOverPanel();
+        isGameOver = false;
+        resultText.text = score.ToString();
+        
+        var result = Mathf.Max(bestscore, score);
+        PlayerPrefs.SetInt("bestscore", result);
+        PlayerPrefs.Save();
+        bestText.text = PlayerPrefs.GetInt("bestscore").ToString();
+        
     }
 
     public void CountCat(GameObject currentCat)
@@ -200,7 +239,7 @@ public class GameManager : Singleton<GameManager>
     
     private void UpdateTimeUI()
     {
-        if(currentTime>maxTime) 
+        if(currentTime>=maxTime) 
             currentTime = maxTime;
         currentTime += Time.deltaTime;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class ObjectPoolManager : Singleton<ObjectPoolManager>
@@ -10,6 +11,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     public int catPrefabObjCount=20;
     public Transform catPrefabObjParent;
     public GameObject catPrefabObj;
+    private List<GameObject> catList = new List<GameObject>();
     
     private void InitPool(Queue<GameObject> prefabObjQueue, GameObject prefabObj, int prefabObjCount, Transform prefabObjParent)
     {
@@ -18,7 +20,7 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
             GameObject obj = Instantiate(prefabObj, prefabObjParent);
             obj.SetActive(false);
             prefabObjQueue.Enqueue(obj);
-            
+            catList.Add(obj);
         }
     }
 
@@ -57,4 +59,21 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         InitPool(catPrefabObjQueue, catPrefabObj, catPrefabObjCount, catPrefabObjParent);
         
     }
+    
+    public void ResetPool()
+    {
+        foreach (var obj in catList)
+        {
+            if (obj != null)
+            {
+               Destroy(obj);
+            }
+        }
+        
+        catPrefabObjQueue.Clear();
+
+        InitPool(catPrefabObjQueue, catPrefabObj, catPrefabObjCount,catPrefabObjParent);
+    }
+
+
 }
