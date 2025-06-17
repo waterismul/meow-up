@@ -19,6 +19,8 @@ public class Cat : MonoBehaviour
     private Rigidbody2D rb;
     private GameManager gm;
     private ObjectPoolManager pool;
+    private SpriteRenderer sr;
+    private AudioManager am;
     
     public bool IsJumping
     {
@@ -32,6 +34,10 @@ public class Cat : MonoBehaviour
     {
         pool = ObjectPoolManager.Instance;
         gm = GameManager.Instance;
+        sr = GetComponent<SpriteRenderer>();
+        am = AudioManager.Instance;
+
+        sr.sortingOrder = 8;
     }
 
     private void Update()
@@ -70,6 +76,8 @@ public class Cat : MonoBehaviour
         swappingTween?.Pause();
         swappingTween?.Kill();
 
+        sr.sortingOrder = 10;
+
         animator.SetTrigger("Jump");
 
         transform.DOMoveY(0, jumpSpeed).SetEase(Ease.InOutQuad)
@@ -85,6 +93,9 @@ public class Cat : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Kinematic;
             animator.SetTrigger("Land");
+            sr.sortingOrder = 5;
+            
+            am.OnSfxPlay(0);
             
             gm.CountCat(gameObject);
             
@@ -104,6 +115,8 @@ public class Cat : MonoBehaviour
             pool.ReturnPrefabObj(gameObject, pool.catPrefabObjQueue);
             OnNextCatCallback?.Invoke();
             OnNextCatCallback = null;
+            
+            am.OnSfxPlay(1);
         }
         
     }

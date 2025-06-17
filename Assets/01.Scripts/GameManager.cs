@@ -5,6 +5,7 @@ using System.Reflection;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -34,6 +35,10 @@ public class GameManager : Singleton<GameManager>
     private Level _level;
     private int _currentLevel;
     private int _currentLife;
+
+    private UIManager um;
+    private AudioManager am;
+    public bool resumed; 
     
     
     private void Start()
@@ -42,6 +47,9 @@ public class GameManager : Singleton<GameManager>
         _currentLife = maxLife;
         cats = new List<Cat>();
         pool = ObjectPoolManager.Instance;
+        um = UIManager.Instance;
+        am = AudioManager.Instance;
+        
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
         countObj.SetActive(false);
@@ -52,11 +60,31 @@ public class GameManager : Singleton<GameManager>
         StartCoroutine(SpawnCat());
         
     }
+    
+    bool IsPointerOverUI()
+    {
+#if UNITY_EDITOR
+        return EventSystem.current.IsPointerOverGameObject(); // 마우스용
+#else
+    if (Input.touchCount > 0)
+        return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId); // 터치용
+    return false;
+#endif
+    }
 
+    
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (resumed)
         {
+            if(!Input.GetMouseButton(0))
+                resumed = false;
+        }
+        
+        if (um.IsPaused) return;
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
+        {
+            if (IsPointerOverUI()) return;
             if (_catPrefabObjScript is null) return;
             if (!_catPrefabObjScript.IsJumping)
                 _catPrefabObjScript.Jumping();
@@ -96,15 +124,18 @@ public class GameManager : Singleton<GameManager>
         if (catCount == 0) return;
         if (catCount % 4 == 0)
         {
+            
             int rand = Random.Range(0, 6);
-            Debug.Log(rand+"======랜덤");
             if(rand >= 3)
-                im.SpawnItemTime();
+                im.SpawnItem(im.timeObj);
             else if(rand is 2 or 1)
-                im.SpawnItemPoint();
+                im.SpawnItem(im.pointObj);
             else if(rand is 0)
-                im.SpawnItemMinus();
+                im.SpawnItem(im.minusObj);
+            
+            
         }
+       
     }
     
     
@@ -131,7 +162,7 @@ public class GameManager : Singleton<GameManager>
     private void GameOver()
     {
         _isGameOver = true;
-        Time.timeScale = 0;
+        um.PauseInit();
         Debug.Log("Game Over");
     }
 

@@ -12,10 +12,12 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private int pointMinus = 20;
 
     private GameManager gm;
+    private AudioManager am;
 
     private void Start()
     {
         gm = GameManager.Instance;
+        am = AudioManager.Instance;
         timeObj.SetActive(false);
         timeObj.transform.localScale = Vector3.zero;
         pointObj.SetActive(false);
@@ -24,58 +26,42 @@ public class ItemManager : MonoBehaviour
         minusObj.transform.localScale = Vector3.zero;
     }
     
-    public void SpawnItemTime()
+    public void SpawnItem(GameObject itemObj)
     {
-        if (!timeObj.activeSelf)
+        if (!itemObj.activeSelf)
         {
+            am.OnSfxPlay(2);
             var pointX = Random.Range(-1, 2);
-            timeObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
-            timeObj.SetActive(true);
-            timeObj.transform.DOScale(1f, 0.5f);
+            if (itemObj.name == "minus item")
+                pointX = 0;
+            itemObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
+            itemObj.SetActive(true);
+            itemObj.transform.DOScale(1f, 0.5f);
         }
         
     }
 
-    public void SpawnItemPoint()
-    {
-        if (!pointObj.activeSelf)
-        {
-            var pointX = Random.Range(-1, 2);
-            pointObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
-            pointObj.SetActive(true);
-            pointObj.transform.DOScale(1f, 0.5f);
-        }
-    }
-    
-    public void SpawnItemMinus()
-    {
-        if (!minusObj.activeSelf)
-        {
-            var pointX = 0;
-            minusObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
-            minusObj.SetActive(true);
-            minusObj.transform.DOScale(1f, 0.5f);
-        }
-    }
-
     public void GetItemPoint()
     {
+        am.OnSfxPlay(3);
         gm.score += pointBonus;
         gm.scoreText.text = "SCORE : "+gm.score;
         OffItemTime(pointObj);
     }
     
+    public void GetItemTime()
+    {
+        am.OnSfxPlay(4);
+        gm.currentTime -= timeBonus;
+        OffItemTime(timeObj);
+    }
+    
     public void GetItemMinus()
     {
+        am.OnSfxPlay(5);
         gm.score -= pointMinus;
         gm.scoreText.text = "SCORE : "+gm.score;
         OffItemTime(minusObj);
-    }
-    
-    public void GetItemTime()
-    {
-        gm.currentTime -= timeBonus;
-        OffItemTime(timeObj);
     }
 
     public void OffItemTime(GameObject obj)
