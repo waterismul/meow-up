@@ -10,10 +10,12 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     public Queue<GameObject> catPrefabObjQueue;
     public int catPrefabObjCount=20;
     public Transform catPrefabObjParent;
-    public GameObject catPrefabObj;
+    public GameObject[] catPrefabObj;
     private List<GameObject> catList = new List<GameObject>();
     
-    private void InitPool(Queue<GameObject> prefabObjQueue, GameObject prefabObj, int prefabObjCount, Transform prefabObjParent)
+    
+    
+    public void InitPool(Queue<GameObject> prefabObjQueue, GameObject prefabObj, int prefabObjCount, Transform prefabObjParent)
     {
         for (int i = 0; i < prefabObjCount; i++)
         {
@@ -54,10 +56,6 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
     {
         base.Awake();
         catPrefabObjQueue = new Queue<GameObject>();
-        
-        //cat
-        InitPool(catPrefabObjQueue, catPrefabObj, catPrefabObjCount, catPrefabObjParent);
-        
     }
     
     public void ResetPool()
@@ -72,7 +70,13 @@ public class ObjectPoolManager : Singleton<ObjectPoolManager>
         
         catPrefabObjQueue.Clear();
 
-        InitPool(catPrefabObjQueue, catPrefabObj, catPrefabObjCount,catPrefabObjParent);
+        //다시 Init
+    }
+
+    public void SpawnCatSetting(Level level)
+    {
+        //cat
+        InitPool(catPrefabObjQueue, catPrefabObj[level.CurrentCatIndex], catPrefabObjCount, catPrefabObjParent);
     }
 
 

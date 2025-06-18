@@ -11,10 +11,14 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private GameObject _homePanel;
     [SerializeField] private GameObject _overPanel;
+    [SerializeField] private GameObject _shopPanel;
+    [SerializeField] private GameObject _registerPanel;
+    [SerializeField] private GameObject _choicePanel;
     
     private GameManager gm;
     private ItemManager im;
     private ObjectPoolManager pool;
+    private ShopUI si;
 
     public bool IsPaused { get; private set; }
     
@@ -26,6 +30,7 @@ public class UIManager : Singleton<UIManager>
         
         InitSetting();
         im = FindFirstObjectByType<ItemManager>();
+        si = _shopPanel.GetComponent<ShopUI>();
         
     }
 
@@ -54,6 +59,37 @@ public class UIManager : Singleton<UIManager>
     {
         PauseInit();
         _overPanel.SetActive(true);
+    }
+
+    public void OpenShopPanel()
+    {
+        si.SaveCat();
+        _shopPanel.SetActive(true);
+    }
+
+    public void OpenRegisterPanel()
+    {
+        _registerPanel.SetActive(true);
+    }
+
+    public void OpenChoicePanel()
+    {
+        _choicePanel.SetActive(true);
+    }
+
+    public void CloseChoicePanel()
+    {
+        _choicePanel.SetActive(false);
+    }
+
+    public void CloseRegisterPanel()
+    {
+        _registerPanel.SetActive(false);
+    }
+
+    public void CloseShopPanel()
+    {
+        _shopPanel.SetActive(false);
     }
 
     public void CloseOverPanel()
@@ -86,6 +122,7 @@ public class UIManager : Singleton<UIManager>
         gm.StopAllCoroutines();
         gm.InitSetting();
         pool.ResetPool();
+        pool.SpawnCatSetting(gm._level);
         InitSetting();
         im.InitSetting();
         
@@ -102,6 +139,12 @@ public class UIManager : Singleton<UIManager>
 
     public void GoGame()
     {
+        if (gm._level == null)
+        {
+            Debug.Log("null");
+            OpenChoicePanel();
+            return;
+        }
         GoTry();
         _homePanel.SetActive(false);
     }

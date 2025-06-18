@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
     private Cat _catPrefabObjScript;
     private ObjectPoolManager pool;
     public bool isGameOver;
-    private Level _level;
+    public Level _level;
     private int _currentLevel;
     private int _currentLife;
 
@@ -45,6 +45,7 @@ public class GameManager : Singleton<GameManager>
 
     private bool hasSpawnedThisRound;
     private int bestscore;
+    
     
     private void Start()
     {
@@ -77,8 +78,12 @@ public class GameManager : Singleton<GameManager>
             life[i].transform.localScale = Vector3.one;
         }
         
-        _level = new Level();
-        _level.Init(0);
+        //_level = new Level();
+        _level.LevelInit(0);
+        _level.CatIndexInit(_level.CurrentCatIndex);
+        Debug.Log(_level.CurrentCatIndex);
+        
+        pool.SpawnCatSetting(_level);
         
         floorObj.transform.position = new Vector3(0, -4.56f, 0);
         Color c = floorObj.GetComponent<Renderer>().material.color;
@@ -132,14 +137,14 @@ public class GameManager : Singleton<GameManager>
         if (newLevel != _currentLevel)
         {
             _currentLevel = newLevel;
-            _level.Init(_currentLevel);
+            _level.LevelInit(_currentLevel);
         }
     }
 
     public IEnumerator SpawnCat()
     {
         yield return new WaitForSeconds(0.8f);
-        _catPrefabObj = pool.GetPrefabObj(pool.catPrefabObjQueue, pool.catPrefabObj, pool.catPrefabObjParent);
+        _catPrefabObj = pool.GetPrefabObj(pool.catPrefabObjQueue, pool.catPrefabObj[_level.CurrentCatIndex], pool.catPrefabObjParent);
         _catPrefabObjScript = _catPrefabObj.GetComponent<Cat>();
         _catPrefabObjScript.IsJumping = false;
         _catPrefabObjScript.Init(()=>StartCoroutine(SpawnCat()));

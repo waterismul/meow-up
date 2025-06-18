@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 33e5c4bdde4fae842a7e893fba8c8608, type: 2}
+  m_Motion: {fileID: 7400000, guid: c5cc9ea577f15784ab85b1c124a6a6cf, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -58,7 +58,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CatAnimation
+  m_Name: BlackCatAnimation
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Jump
@@ -147,7 +147,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 71fdcf5bd31e58047a06d9ee0bc672c5, type: 2}
+  m_Motion: {fileID: 7400000, guid: 6fc8fec39cbf91b4c850f33fdcb9cdd2, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -173,7 +173,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 71cf095a89f18ea48b2901892f0a9ec7, type: 2}
+  m_Motion: {fileID: 7400000, guid: 8a55316e6e042564698dcf5acde78fe8, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
