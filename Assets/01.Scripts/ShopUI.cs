@@ -39,6 +39,7 @@ public class ShopUI : MonoBehaviour
                 changedToggle.isOn = true;
             }
         }
+        
     }
 
     
@@ -72,6 +73,11 @@ public class ShopUI : MonoBehaviour
                 catToggles[i].interactable = true;
             }
         }
+        
+        // 마지막 선택된 고양이 불러오기
+        int savedIndex = PlayerPrefs.GetInt("selectedCatIndex", 0);
+        catToggles[savedIndex].isOn = true;
+        _saveToggle = catToggles[savedIndex];
     }
 
 
@@ -112,16 +118,19 @@ public class ShopUI : MonoBehaviour
             case "brown Toggle":
                 _level.CatIndexInit(0);
                 PlayerPrefs.SetInt("catUnlocked_" + 0, 1);
+                PlayerPrefs.SetInt("selectedCatIndex", 0);
                 break;
             case "black Toggle":
                 _level.CatIndexInit(1);
                 PlayerPrefs.SetInt("catUnlocked_" + 1, 1);
+                PlayerPrefs.SetInt("selectedCatIndex", 1);
                 break;
             // 필요하면 더 추가
             default:
                 return;
                 break;
         }
+
 
         PlayerPrefs.Save();
     }
