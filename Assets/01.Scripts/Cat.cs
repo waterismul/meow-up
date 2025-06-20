@@ -125,17 +125,17 @@ public class Cat : MonoBehaviour
     {
         if (other.CompareTag("ItemTime") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
         {
-            gm.im.GetItemTime();
+            gm._im.GetItemTime();
         }
         
         if (other.CompareTag("ItemPoint") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
         {
-            gm.im.GetItemPoint();
+            gm._im.GetItemPoint();
         }
         
         if (other.CompareTag("ItemMinus") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
         {
-            gm.im.GetItemMinus();
+            gm._im.GetItemMinus();
         }
             
     }

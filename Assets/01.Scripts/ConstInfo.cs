@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Level
+public class ConstInfo
 {
     private float[] swappingDur;
 
@@ -10,7 +10,12 @@ public class Level
 
     private int[] catsIndex;
     private int currentCatIndex;
-    public int CurrentCatIndex => currentCatIndex;
+
+    public int CurrentCatIndex
+    {
+        get =>  currentCatIndex;
+        set=> currentCatIndex = value;
+    }
 
     public void LevelInit(int level)
     {
@@ -26,7 +31,7 @@ public class Level
 
     public int LevelStep(int catCount)
     {
-        int level = Mathf.Clamp(catCount / 10, 0, 6);
+        int level = Mathf.Clamp(catCount / 3, 0, 6);
         return level;
     }
 }

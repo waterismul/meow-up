@@ -220,7 +220,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -150}
+  m_AnchoredPosition: {x: 300, y: -350}
   m_SizeDelta: {x: 600, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &29164040
@@ -5180,7 +5180,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SAVE
+  m_text: 'Close
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aa6ea8efaafaca94f8ec52f61bcf5876, type: 2}
   m_sharedMaterial: {fileID: 7524375442385255916, guid: aa6ea8efaafaca94f8ec52f61bcf5876, type: 2}
@@ -6519,28 +6521,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cats: []
   catCount: 0
+  scoreText: {fileID: 635456789}
+  countText: {fileID: 1724293499185452638}
   life:
   - {fileID: 199183554}
   - {fileID: 1717923464}
   - {fileID: 1840025653}
   - {fileID: 1654170761}
   - {fileID: 173863269}
-  scoreText: {fileID: 635456789}
-  score: 0
   countObj: {fileID: 1526419945024609873}
-  countText: {fileID: 1724293499185452638}
-  currentTime: 0
-  im: {fileID: 657849793}
   floorObj: {fileID: 1941745239}
   catObj: {fileID: 168039568930386627, guid: 22f78291977c6bb4e817019eb7d52887, type: 3}
   downY: 0
   gaugeTop: {fileID: 2022132678}
-  maxLife: 5
-  maxTime: 10
-  resultText: {fileID: 140713639}
-  bestText: {fileID: 1174153745}
+  score: 0
+  currentTime: 0
   isGameOver: 0
   resumed: 0
+  resultText: {fileID: 140713639}
+  bestText: {fileID: 1174153745}
+  _im: {fileID: 657849793}
 --- !u!4 &919992314
 Transform:
   m_ObjectHideFlags: 0
@@ -10685,6 +10685,8 @@ MonoBehaviour:
   catPrefabObj:
   - {fileID: 168039568930386627, guid: 22f78291977c6bb4e817019eb7d52887, type: 3}
   - {fileID: 168039568930386627, guid: 4b4184f219a6b6f48a417ba1d6ffdec4, type: 3}
+  - {fileID: 168039568930386627, guid: 76fe3dcf406aa8d4f9e1eaa25387e97e, type: 3}
+  - {fileID: 168039568930386627, guid: 41c65883e3f96e34ebe11604e10f3872, type: 3}
 --- !u!4 &1579100438
 Transform:
   m_ObjectHideFlags: 0
@@ -13901,7 +13903,7 @@ GameObject:
   - component: {fileID: 2045246483}
   - component: {fileID: 2045246482}
   m_Layer: 5
-  m_Name: '[Button] save'
+  m_Name: '[Button] close'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13974,18 +13976,6 @@ MonoBehaviour:
       - m_Target: {fileID: 619189463}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: CloseShopPanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1392643760}
-        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
-        m_MethodName: OnSaveButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

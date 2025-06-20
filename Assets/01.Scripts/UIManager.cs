@@ -120,9 +120,12 @@ public class UIManager : Singleton<UIManager>
     public void GoTry()
     {
         gm.StopAllCoroutines();
-        gm.InitSetting();
         pool.ResetPool();
-        pool.SpawnCatSetting(gm._level);
+        if (gm.InitSetting() == -1)
+        {
+            OpenChoicePanel();
+            return;
+        }
         InitSetting();
         im.InitSetting();
         
@@ -139,13 +142,28 @@ public class UIManager : Singleton<UIManager>
 
     public void GoGame()
     {
-        if (gm._level == null)
+        bool anyUnlocked = false;
+
+        for (int i = 0; i < 4; i++)
         {
-            Debug.Log("null");
-            OpenChoicePanel();
-            return;
+            int k = PlayerPrefs.GetInt("catUnlocked_" + i);
+            if (k == 1)
+            {
+                anyUnlocked = true;
+                break;
+            }
         }
-        GoTry();
-        _homePanel.SetActive(false);
+
+        if (anyUnlocked)
+        {
+            GoTry();
+            _homePanel.SetActive(false);
+        }
+        else
+        {
+           Debug.Log("null");
+           OpenChoicePanel();
+        }
     }
+
 }
