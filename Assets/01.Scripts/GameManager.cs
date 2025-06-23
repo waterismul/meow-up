@@ -22,7 +22,7 @@ public class GameManager : Singleton<GameManager>
     public Image[] life;
     public GameObject countObj;
     [SerializeField] private GameObject floorObj;
-    [SerializeField] private GameObject catObj;
+    //[SerializeField] private GameObject catObj;
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
     
@@ -259,14 +259,14 @@ public class GameManager : Singleton<GameManager>
 
         if (ratio < 0.3f)
         {
-            gaugeTop.GetComponent<Image>().color = new Color(1f, 0f, 0f);
+            gaugeTop.GetComponent<Image>().color = new Color(1f, 0f, 0f,1f);
 
         }
             
         else
         {
             
-            gaugeTop.GetComponent<Image>().color = new Color(0f, 0f, 0f);
+            gaugeTop.GetComponent<Image>().color = new Color(135/255f, 89/255f, 172/255f, 1f);
         }
 
         if (ratio <= 0f)
