@@ -142,19 +142,19 @@ public class ShopUI : MonoBehaviour
     {
         switch (couponNumber.text)
         {
-            case "milyhi":
+            case "browncat":
                 RegisterSetting(0);
                 PlayerPrefs.SetInt("catUnlocked_" + 0, 1);
                 break;
-            case "ozhi":
+            case "blackcat":
                 RegisterSetting(1);
                 PlayerPrefs.SetInt("catUnlocked_" + 1, 1);
                 break;
-            case "seolyhi":
+            case "graycat":
                 RegisterSetting(2);
                 PlayerPrefs.SetInt("catUnlocked_" + 2, 1);
                 break;
-            case "animalhi":
+            case "sharmcat":
                 RegisterSetting(3);
                 PlayerPrefs.SetInt("catUnlocked_" + 3, 1);
                 break;

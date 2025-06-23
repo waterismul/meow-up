@@ -14,11 +14,13 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _shopPanel;
     [SerializeField] private GameObject _registerPanel;
     [SerializeField] private GameObject _choicePanel;
+    [SerializeField] private GameObject _rulePanel;
     
     private GameManager gm;
     private ItemManager im;
     private ObjectPoolManager pool;
     private ShopUI si;
+    
 
     public bool IsPaused { get; private set; }
     
@@ -39,6 +41,16 @@ public class UIManager : Singleton<UIManager>
         CloseOverPanel();
         ClosePausePanel();
         CloseSettingPanel();
+    }
+
+    public void OpenRulePanel()
+    {
+        _rulePanel.SetActive(true);
+    }
+
+    public void CloseRulePanel()
+    {
+        _rulePanel.SetActive(false);
     }
     
     

@@ -22,7 +22,6 @@ public class GameManager : Singleton<GameManager>
     public Image[] life;
     public GameObject countObj;
     [SerializeField] private GameObject floorObj;
-    //[SerializeField] private GameObject catObj;
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
     
@@ -69,12 +68,14 @@ public class GameManager : Singleton<GameManager>
         bestscore = PlayerPrefs.GetInt("bestscore");
         catCount = 0;
         score = 0;
+        currentTime = 0;
+        
         scoreText.text = "SCORE : "+score;
         _currentLife = _maxLife;
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
         countObj.SetActive(false);
-        currentTime = 0;
+        
         
         for (int i=0; i < _maxLife; i++)
         {
@@ -190,19 +191,25 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(0.5f);
         foreach (Cat cat in cats)
         {
-            cat.transform.position -= new Vector3(0, downY, 0);
+            cat.transform.DOMoveY(cat.transform.position.y-downY, 0.5f);
+            //cat.transform.position -= new Vector3(0, downY, 0);
         }
 
         Color c = floorObj.GetComponent<Renderer>().material.color;
-        c.a = 0;
-        floorObj.GetComponent<Renderer>().material.color = c;
+        if(c.a!=0)
+            floorObj.transform.DOMoveY(floorObj.transform.position.y-downY, 0.5f).OnComplete(() =>
+            {
+                Color c = floorObj.GetComponent<Renderer>().material.color;
+                c.a = 0;
+                floorObj.GetComponent<Renderer>().material.color = c;
+            });
         
         if(_im.timeObj.activeSelf)
-            _im.timeObj.transform.position -= new Vector3(0, downY, 0);
+            _im.timeObj.transform.DOMoveY(_im.timeObj.transform.position.y-downY, 0.5f);
         if(_im.pointObj.activeSelf)
-            _im.pointObj.transform.position -= new Vector3(0, downY, 0);
+            _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y-downY, 0.5f);
         if(_im.minusObj.activeSelf)
-            _im.minusObj.transform.position -= new Vector3(0, downY, 0);
+            _im.minusObj.transform.DOMoveY(_im.minusObj.transform.position.y-downY, 0.5f);
     }
 
     private void GameOver()
