@@ -34,11 +34,11 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private TextMeshProUGUI bestText;
     
+    //game
     private int _maxLife=5;
     private float _maxTime=60;
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
-    
     private int _currentLevel;
     private int _currentLife;
     
@@ -50,7 +50,7 @@ public class GameManager : Singleton<GameManager>
 
     private bool hasSpawnedThisRound;
     private int bestscore;
-    
+    public int comboCount;
     
     private void Start()
     {
@@ -70,6 +70,7 @@ public class GameManager : Singleton<GameManager>
         score = 0;
         currentTime = 0;
         
+        //game init
         scoreText.text = "SCORE : "+score;
         _currentLife = _maxLife;
         gaugeTop.fillAmount = 1f;
@@ -89,13 +90,15 @@ public class GameManager : Singleton<GameManager>
         
         //level init
         constInfo.LevelInit(0);
+        comboCount = 0;
+        
+        //cat init
         int selectedIndex = PlayerPrefs.GetInt("selectedCatIndex", -1);
         if (selectedIndex == -1) // 선택된 고양이 인덱스가 없어 -1이라면 return으로 빠져나옴
             return selectedIndex;
         constInfo.CatIndexInit(selectedIndex);
         Debug.Log(selectedIndex);
-       
-        //cat init
+        
         cats = new List<Cat>();
         cats.Clear();
         _pool.SpawnCatSetting(selectedIndex);
@@ -135,21 +138,24 @@ public class GameManager : Singleton<GameManager>
 
         if(!isGameOver)
             UpdateTimeUI();
-        
-        
-        if(constInfo !=null)
-            LevelControll();
+
+
+        if (constInfo != null)
+        {
+            //LevelControll();
+        }
+            
     }
 
-    private void LevelControll()
-    {
-        int newLevel = constInfo.LevelStep(catCount);
-        if (newLevel != _currentLevel)
-        {
-            _currentLevel = newLevel;
-            constInfo.LevelInit(_currentLevel);
-        }
-    }
+    // private void LevelControll()
+    // {
+    //     int newLevel = constInfo.LevelStep(catCount);
+    //     if (newLevel != _currentLevel)
+    //     {
+    //         _currentLevel = newLevel;
+    //         constInfo.LevelInit(_currentLevel);
+    //     }
+    // }
 
     public IEnumerator SpawnCat()
     {
@@ -230,9 +236,7 @@ public class GameManager : Singleton<GameManager>
     {
         cats.Add(currentCat.GetComponent<Cat>());
         catCount += 1;
-        score += 100;
-        scoreText.text = "SCORE : "+ score;
-            
+        
         countObj.transform.position = currentCat.transform.position + new Vector3(1f, 1f, transform.position.z);
         countText.text = catCount.ToString();
         countObj.SetActive(true);
@@ -287,5 +291,21 @@ public class GameManager : Singleton<GameManager>
     {
         life[_currentLife].transform.DOScale(0f, 0.3f);
     }
-    
+
+
+    public void ComboInit()
+    {
+        comboCount++;
+        comboCount = constInfo.LevelStep(comboCount);
+        constInfo.LevelInit(comboCount);
+        
+        score += 100+100*(comboCount-1);
+        scoreText.text = "SCORE : "+ score;
+    }
+
+    public void ComboReset()
+    {
+        constInfo.LevelInit(0);
+        comboCount = 0;
+    }
 }

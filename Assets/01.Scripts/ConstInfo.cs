@@ -19,13 +19,13 @@ public class ConstInfo
 
     public void LevelInit(int level)
     {
-        swappingDur = new float[7] { 1.5f, 1.3f, 1.1f, 0.9f, 0.7f, 0.5f, 0.3f };
+        swappingDur = new float[7] { 1.5f, 1.3f, 1.1f, 0.9f, 0.7f, 0.5f, 0.5f };
         currentSwappingDur = swappingDur[level];
     }
     
     public int LevelStep(int catCount)
     {
-        int level = Mathf.Clamp(catCount / 20, 0, 6);
+        int level = Mathf.Clamp(catCount, 0, 6);
         return level;
     }
     

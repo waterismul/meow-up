@@ -48,9 +48,7 @@ public class Cat : MonoBehaviour
             gm.cats.Remove(this);
         }
     }
-
-   
-
+    
     public void Init(Action onNextCatCallback)
     {
         OnNextCatCallback = onNextCatCallback;
@@ -99,6 +97,9 @@ public class Cat : MonoBehaviour
             
             gm.CountCat(gameObject);
             
+            gm.ComboInit();
+            Debug.Log($"콤보는? {gm.comboCount}");
+            
             UpdateCatColliders();
 
             if (gm.cats.Count > 4)
@@ -117,6 +118,8 @@ public class Cat : MonoBehaviour
             OnNextCatCallback = null;
             
             am.OnSfxPlay(1);
+            
+            gm.ComboReset();
         }
         
     }
