@@ -57,7 +57,7 @@ public class GameManager : Singleton<GameManager>
         _pool = ObjectPoolManager.Instance;
         _um = UIManager.Instance;
         _am = AudioManager.Instance;
-        constInfo = new  ConstInfo();
+        constInfo = new ConstInfo();
         
         Time.timeScale = 0f;
     }
