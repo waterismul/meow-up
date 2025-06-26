@@ -63,6 +63,14 @@ public class AudioManager : Singleton<AudioManager>
             _sfxSource.Play();
         }
     }
+    
+    public void OnSfxStop()
+    {
+        if (_sfxSource.isPlaying)
+        {
+            _sfxSource.Stop();
+        }
+    }
 
     public void OnBgmPlay(int index)
     {
@@ -82,4 +90,6 @@ public class AudioManager : Singleton<AudioManager>
             _itemSource.Play();
         }
     }
+
+   
 }

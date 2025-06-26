@@ -17,7 +17,7 @@ public class FeverButton : MonoBehaviour
         
         am.OnItemPlay(0);
         gm.score += pointBonus;
-        gm.scoreText.text = "SCORE : "+gm.score;
+        gm.scoreText.text = "점수 : "+gm.score;
         
         transform.localScale = Vector3.zero;
 

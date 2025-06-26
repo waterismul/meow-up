@@ -4786,6 +4786,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d48c41f6efc2d974faec17e2d1882df1, type: 3}
   - {fileID: 8300000, guid: 42f719caf81487049854f5cc88ead5f4, type: 3}
   - {fileID: 8300000, guid: bb0bbae346ef92a4dadd3ffb5ccfedb4, type: 3}
+  - {fileID: 8300000, guid: 8c33b732fc47f744287f6008e50ba893, type: 3}
   _itemClips:
   - {fileID: 8300000, guid: 782829f06999ee14c9e6b36d6e62af66, type: 3}
   - {fileID: 8300000, guid: 054bf0e8f4879ad4bb4aa33d80005433, type: 3}
@@ -6728,7 +6729,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 300, y: -7.200001}
-  m_SizeDelta: {x: 0, y: 76.8}
+  m_SizeDelta: {x: 188.02, y: 76.8}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &635456789
 MonoBehaviour:

@@ -77,6 +77,10 @@ public class UIManager : Singleton<UIManager>
     public void OpenFeverPanel()
     {
         _feverPanel.SetActive(true);
+        var pos = _feverPanel.GetComponent<RectTransform>();
+        pos.anchoredPosition = new Vector2(-1100f, 0);
+        pos.DOAnchorPos(new Vector2(0f, 0f), 1.5f)
+            .SetEase(Ease.OutQuad).SetUpdate(true);
     }
 
     public void CloseFeverPanel()

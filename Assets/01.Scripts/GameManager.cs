@@ -300,7 +300,6 @@ public class GameManager : Singleton<GameManager>
 
     public void ComboInit(GameObject currentCat)
     {
-        
         comboCount++;
         comboCount = constInfo.LevelStep(comboCount);
         constInfo.LevelInit(comboCount);
@@ -337,10 +336,28 @@ public class GameManager : Singleton<GameManager>
                 comboText.color = Color.white;
                 comboText.colorGradient = gradient;
                 comboText.enableVertexGradient = true;
+                var pos = currentCat.transform.position;
                 DOVirtual.DelayedCall(0.5f, () =>
                 {
-                    
-                    OnFeverTime();
+                    Time.timeScale = 0f;
+                    Animator animator = currentCat.GetComponent<Animator>();
+                    animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                    animator.SetTrigger("Fever");
+                    _am.OnSfxPlay(3);
+
+                    currentCat.transform.DOMoveX(4f, 2.5f).SetUpdate(true).OnComplete(() =>
+                    {
+                     
+                        currentCat.transform.position = new Vector3(-2.3f, currentCat.transform.position.y, currentCat.transform.position.z);
+                        currentCat.transform.DOMoveX(pos.x, 1f).SetUpdate(true).OnComplete(() =>
+                        {
+                            _am.OnSfxStop();
+                            animator.SetTrigger("Land");
+                        });
+                        OnFeverTime();
+                    });
+
+                
 
                 });
                 
@@ -395,7 +412,6 @@ public class GameManager : Singleton<GameManager>
         feverTimeTitle.colorGradient = gradient;
         feverTimeTitle.enableVertexGradient = true;
         _um.OpenFeverPanel();
-        Time.timeScale = 0f;
         _am.OnBgmPlay(1);
         pauseButton.gameObject.SetActive(false);
         

@@ -80,10 +80,5 @@ public class ItemManager : MonoBehaviour
         obj.transform.localScale = Vector3.zero;
         obj.SetActive(false);
     }
-
-    public void OffButtonTime(Button btn)
-    {
-        btn.transform.localScale = Vector3.zero;
-        btn.interactable = false;
-    }
+    
 }
