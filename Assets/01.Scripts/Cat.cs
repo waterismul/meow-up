@@ -34,10 +34,10 @@ public class Cat : MonoBehaviour
     {
         pool = ObjectPoolManager.Instance;
         gm = GameManager.Instance;
-        sr = GetComponent<SpriteRenderer>();
+        
         am = AudioManager.Instance;
 
-        sr.sortingOrder = 8;
+       
     }
 
     private void Update()
@@ -59,11 +59,22 @@ public class Cat : MonoBehaviour
 
     public void Swapping(float dur)
     {
-        swappingTween = transform.DOMoveX(posX, dur)
-            .SetEase(Ease.Linear)
-            .SetLoops(-1, LoopType.Yoyo)
-            .From(-posX);
+        sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 8;
         
+        float leftX = -2.3f;
+        float rightX = 2.3f;
+        
+        swappingTween = transform.DOMoveX(rightX, dur/2)
+            .SetEase(Ease.Linear).OnComplete(() =>
+            {
+                swappingTween = transform.DOMoveX(leftX, dur)
+                    .SetEase(Ease.Linear)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .From(rightX);
+
+            });
+
     }
 
     public void Jumping()
@@ -97,7 +108,7 @@ public class Cat : MonoBehaviour
             
             gm.CountCat(gameObject);
             
-            gm.ComboInit();
+            gm.ComboInit(gameObject);
             Debug.Log($"콤보는? {gm.comboCount}");
             
             UpdateCatColliders();

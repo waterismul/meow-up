@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
     public TextMeshProUGUI scoreText;
     public TextMeshPro countText;
     public TextMeshPro comboText;
+    public CanvasGroup canvasGroup;
     public Image[] life;
     public GameObject countObj;
     [SerializeField] private GameObject floorObj;
@@ -82,6 +83,7 @@ public class GameManager : Singleton<GameManager>
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
         countObj.SetActive(false);
+        comboText.gameObject.SetActive(false);
         
         
         for (int i=0; i < _maxLife; i++)
@@ -156,7 +158,7 @@ public class GameManager : Singleton<GameManager>
         _catPrefabObjScript.IsJumping = false;
         _catPrefabObjScript.Init(()=>StartCoroutine(SpawnCat()));
         _catPrefabObjScript.Swapping(constInfo.CurrentSwappingDur);
-        
+        _catPrefabObj.transform.position = new Vector3(0, _catPrefabObj.transform.position.y, 0);
         SpawnItem();
         
     }
@@ -189,7 +191,6 @@ public class GameManager : Singleton<GameManager>
         foreach (Cat cat in cats)
         {
             cat.transform.DOMoveY(cat.transform.position.y-downY, 0.5f);
-            //cat.transform.position -= new Vector3(0, downY, 0);
         }
 
         Color c = floorObj.GetComponent<Renderer>().material.color;
@@ -227,8 +228,21 @@ public class GameManager : Singleton<GameManager>
     {
         cats.Add(currentCat.GetComponent<Cat>());
         catCount += 1;
+
+
+        if (currentCat.transform.position.x > 1.1f)
+        {
+            countObj.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            countText.transform.localRotation = Quaternion.Euler(0f, -180f, 0f);
+            countObj.transform.position = currentCat.transform.position + new Vector3(-1f, 1f, transform.position.z);
+        }
+        else
+        {
+            countObj.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            countText.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
+            countObj.transform.position = currentCat.transform.position + new Vector3(1f, 1f, transform.position.z);
+        }
         
-        countObj.transform.position = currentCat.transform.position + new Vector3(1f, 1f, transform.position.z);
         countText.text = catCount.ToString();
         countObj.SetActive(true);
         DOVirtual.DelayedCall(0.5f, () =>
@@ -284,8 +298,9 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void ComboInit()
+    public void ComboInit(GameObject currentCat)
     {
+        
         comboCount++;
         comboCount = constInfo.LevelStep(comboCount);
         constInfo.LevelInit(comboCount);
@@ -299,7 +314,7 @@ public class GameManager : Singleton<GameManager>
                 comboText.gameObject.SetActive(false);
                 break;
             case 2:
-                comboText.color = new Color32(200, 96, 106, 255);
+                comboText.color = new Color32(255, 96, 106, 255);
                 comboText.enableVertexGradient = false;
                 break;
             case 3:
@@ -322,23 +337,37 @@ public class GameManager : Singleton<GameManager>
                 comboText.color = Color.white;
                 comboText.colorGradient = gradient;
                 comboText.enableVertexGradient = true;
-                ComboReset();
                 DOVirtual.DelayedCall(0.5f, () =>
                 {
                     
                     OnFeverTime();
 
                 });
+                
                 break;
         }
 
         if (comboCount > 1 && comboCount<7)
         {
-            comboText.text = $"Combo{comboCount}";
+            comboText.text = $"COMBO {comboCount}";
+            comboText.transform.position = currentCat.transform.position;
             comboText.gameObject.SetActive(true);
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                comboText.gameObject.SetActive(false);
+            });
         }
-        else if(comboCount is 7)
-            comboText.text = "Combo Max";
+        else if (comboCount is 7)
+        {
+            comboText.text = "COMBO MAX";
+            comboText.transform.position = currentCat.transform.position;
+            comboText.gameObject.SetActive(true);
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                comboText.gameObject.SetActive(false);
+            });
+        }
+            
         score += 100+100*(comboCount-1);
         scoreText.text = "점수 : "+ score;
     }
@@ -362,11 +391,20 @@ public class GameManager : Singleton<GameManager>
 
     private void OnFeverTime()
     {
+        Gradient();
         feverTimeTitle.colorGradient = gradient;
+        feverTimeTitle.enableVertexGradient = true;
         _um.OpenFeverPanel();
         Time.timeScale = 0f;
         _am.OnBgmPlay(1);
         pauseButton.gameObject.SetActive(false);
+        
+        // 깜빡이기: CanvasGroup으로 알파 조절!
+        canvasGroup.alpha = 1f;
+        Tween tween = canvasGroup.DOFade(0f, 0.5f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine)
+            .SetUpdate(true);
         
         DOVirtual.DelayedCall(5f,()=>
         {
@@ -374,7 +412,10 @@ public class GameManager : Singleton<GameManager>
             Time.timeScale = 1f;
             _am.OnBgmPlay(0);
             pauseButton.gameObject.SetActive(true);
+            tween.Kill(true);
+            ComboReset();
         });
+        
 
     }
     
