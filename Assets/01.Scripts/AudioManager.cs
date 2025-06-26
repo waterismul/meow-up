@@ -7,6 +7,8 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private AudioSource _sfxSource;
     [SerializeField] private AudioSource _itemSource;
+    [SerializeField] private AudioSource _bgmSource;
+    
     
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
@@ -14,6 +16,7 @@ public class AudioManager : Singleton<AudioManager>
     
     [SerializeField] private AudioClip[] _sfxClips;
     [SerializeField] private AudioClip[] _itemClips;
+    [SerializeField] private AudioClip[] _bgmClips;
     
     private const string BGM_KEY = "bgm";
     private const string SFX_KEY = "sfx";
@@ -58,6 +61,15 @@ public class AudioManager : Singleton<AudioManager>
         {
             _sfxSource.clip = _sfxClips[index];
             _sfxSource.Play();
+        }
+    }
+
+    public void OnBgmPlay(int index)
+    {
+        if (index >= 0 && index < _sfxClips.Length)
+        {
+            _bgmSource.clip = _bgmClips[index];
+            _bgmSource.Play();
         }
     }
     

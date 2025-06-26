@@ -1,15 +1,18 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemManager : MonoBehaviour
 {
     public GameObject timeObj;
     public GameObject pointObj;
     public GameObject minusObj;
-    
+
     [SerializeField] private float timeBonus = 10f;
     [SerializeField] private int pointBonus = 10;
     [SerializeField] private int pointMinus = 20;
+
 
     private GameManager gm;
     private AudioManager am;
@@ -51,9 +54,11 @@ public class ItemManager : MonoBehaviour
     {
         am.OnItemPlay(0);
         gm.score += pointBonus;
-        gm.scoreText.text = "SCORE : "+gm.score;
+        gm.scoreText.text = "점수 : "+gm.score;
         OffItemTime(pointObj);
     }
+    
+   
     
     public void GetItemTime()
     {
@@ -66,7 +71,7 @@ public class ItemManager : MonoBehaviour
     {
         am.OnItemPlay(2);
         gm.score -= pointMinus;
-        gm.scoreText.text = "SCORE : "+gm.score;
+        gm.scoreText.text = "점수 : "+gm.score;
         OffItemTime(minusObj);
     }
 
@@ -74,5 +79,11 @@ public class ItemManager : MonoBehaviour
     {
         obj.transform.localScale = Vector3.zero;
         obj.SetActive(false);
+    }
+
+    public void OffButtonTime(Button btn)
+    {
+        btn.transform.localScale = Vector3.zero;
+        btn.interactable = false;
     }
 }

@@ -15,6 +15,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _registerPanel;
     [SerializeField] private GameObject _choicePanel;
     [SerializeField] private GameObject _rulePanel;
+    [SerializeField] private GameObject _feverPanel;
     
     private GameManager gm;
     private ItemManager im;
@@ -71,6 +72,16 @@ public class UIManager : Singleton<UIManager>
     {
         PauseInit();
         _overPanel.SetActive(true);
+    }
+
+    public void OpenFeverPanel()
+    {
+        _feverPanel.SetActive(true);
+    }
+
+    public void CloseFeverPanel()
+    {
+        _feverPanel.SetActive(false);
     }
 
     public void OpenShopPanel()

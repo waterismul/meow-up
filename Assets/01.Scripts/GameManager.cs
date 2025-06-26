@@ -19,11 +19,14 @@ public class GameManager : Singleton<GameManager>
     [Header("[GameUI]")]
     public TextMeshProUGUI scoreText;
     public TextMeshPro countText;
+    public TextMeshPro comboText;
     public Image[] life;
     public GameObject countObj;
     [SerializeField] private GameObject floorObj;
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
+    [SerializeField] private GameObject pauseButton;
+    private VertexGradient gradient;
     
     public int score;
     public float currentTime;
@@ -33,6 +36,7 @@ public class GameManager : Singleton<GameManager>
     
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private TextMeshProUGUI bestText;
+    public TextMeshProUGUI feverTimeTitle;
     
     //game
     private int _maxLife=5;
@@ -60,6 +64,7 @@ public class GameManager : Singleton<GameManager>
         constInfo = new ConstInfo();
         
         Time.timeScale = 0f;
+        _am.OnBgmPlay(0);
     }
 
     public int InitSetting()
@@ -69,9 +74,10 @@ public class GameManager : Singleton<GameManager>
         catCount = 0;
         score = 0;
         currentTime = 0;
+        Gradient();
         
         //game init
-        scoreText.text = "SCORE : "+score;
+        scoreText.text = "점수 : "+score;
         _currentLife = _maxLife;
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
@@ -138,24 +144,9 @@ public class GameManager : Singleton<GameManager>
 
         if(!isGameOver)
             UpdateTimeUI();
-
-
-        if (constInfo != null)
-        {
-            //LevelControll();
-        }
             
     }
-
-    // private void LevelControll()
-    // {
-    //     int newLevel = constInfo.LevelStep(catCount);
-    //     if (newLevel != _currentLevel)
-    //     {
-    //         _currentLevel = newLevel;
-    //         constInfo.LevelInit(_currentLevel);
-    //     }
-    // }
+    
 
     public IEnumerator SpawnCat()
     {
@@ -277,7 +268,7 @@ public class GameManager : Singleton<GameManager>
         else
         {
             
-            gaugeTop.GetComponent<Image>().color = new Color(135/255f, 89/255f, 172/255f, 1f);
+            gaugeTop.GetComponent<Image>().color = new Color32(135, 89, 172, 255);
         }
 
         if (ratio <= 0f)
@@ -298,9 +289,58 @@ public class GameManager : Singleton<GameManager>
         comboCount++;
         comboCount = constInfo.LevelStep(comboCount);
         constInfo.LevelInit(comboCount);
-        
+
+        switch (comboCount)
+        {
+            case 0:
+                comboText.gameObject.SetActive(false);
+                break;
+            case 1:
+                comboText.gameObject.SetActive(false);
+                break;
+            case 2:
+                comboText.color = new Color32(200, 96, 106, 255);
+                comboText.enableVertexGradient = false;
+                break;
+            case 3:
+                comboText.color = new Color32(255, 153, 17, 255);
+                comboText.enableVertexGradient = false;
+                break;
+            case 4:
+                comboText.color = new Color32(90, 172, 108, 255);
+                comboText.enableVertexGradient = false;
+                break;
+            case 5:
+                comboText.color = new Color32(90, 172, 255, 255);
+                comboText.enableVertexGradient = false;
+                break;
+            case 6:
+                comboText.color = new Color32(134, 89, 171, 255);
+                comboText.enableVertexGradient = false;
+                break;
+            case 7:
+                comboText.color = Color.white;
+                comboText.colorGradient = gradient;
+                comboText.enableVertexGradient = true;
+                ComboReset();
+                DOVirtual.DelayedCall(0.5f, () =>
+                {
+                    
+                    OnFeverTime();
+
+                });
+                break;
+        }
+
+        if (comboCount > 1 && comboCount<7)
+        {
+            comboText.text = $"Combo{comboCount}";
+            comboText.gameObject.SetActive(true);
+        }
+        else if(comboCount is 7)
+            comboText.text = "Combo Max";
         score += 100+100*(comboCount-1);
-        scoreText.text = "SCORE : "+ score;
+        scoreText.text = "점수 : "+ score;
     }
 
     public void ComboReset()
@@ -308,4 +348,34 @@ public class GameManager : Singleton<GameManager>
         constInfo.LevelInit(0);
         comboCount = 0;
     }
+
+    public void Gradient()
+    {
+        // Gradient 생성
+        gradient = new VertexGradient(
+            new Color32(200, 75, 75, 255),    // topLeft (밝은 빨강)
+            new Color32(255, 212, 9, 255),   // topRight (밝은 주황)
+            new Color32(90, 170, 108, 255),  // bottomLeft (하늘색)
+            new Color32(90, 172, 255, 255) 
+        );
+    }
+
+    private void OnFeverTime()
+    {
+        feverTimeTitle.colorGradient = gradient;
+        _um.OpenFeverPanel();
+        Time.timeScale = 0f;
+        _am.OnBgmPlay(1);
+        pauseButton.gameObject.SetActive(false);
+        
+        DOVirtual.DelayedCall(5f,()=>
+        {
+            _um.CloseFeverPanel();
+            Time.timeScale = 1f;
+            _am.OnBgmPlay(0);
+            pauseButton.gameObject.SetActive(true);
+        });
+
+    }
+    
 }
