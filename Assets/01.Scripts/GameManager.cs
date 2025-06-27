@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
 
     //game
     private int _maxLife = 5;
-    private float _maxTime = 60;
+    private float _maxTime = 30;
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private int _currentLevel;
@@ -63,7 +63,6 @@ public class GameManager : Singleton<GameManager>
         constInfo = new ConstInfo();
 
         Time.timeScale = 0f;
-        _am.OnBgmPlay(0);
     }
 
     public int InitSetting()
@@ -82,6 +81,7 @@ public class GameManager : Singleton<GameManager>
         downY = 0.875f;
         countObj.SetActive(false);
         comboText.gameObject.SetActive(false);
+        isGameOver = false;
 
 
         for (int i = 0; i < _maxLife; i++)
@@ -207,13 +207,16 @@ public class GameManager : Singleton<GameManager>
 
         if (comboText.gameObject.activeSelf)
             comboText.transform.DOMoveY(comboText.transform.position.y - downY, 0.3f);
+        
+        if (countObj.activeSelf)
+            countObj.transform.DOMoveY(countObj.transform.position.y - downY, 0.3f);
     }
 
     private void GameOver()
     {
         isGameOver = true;
         _um.OpenOverPanel();
-        isGameOver = false;
+        
         resultText.text = score.ToString();
 
         var result = Mathf.Max(bestscore, score);
@@ -243,7 +246,7 @@ public class GameManager : Singleton<GameManager>
 
         countText.text = catCount.ToString();
         countObj.SetActive(true);
-        DOVirtual.DelayedCall(0.2f, () => { countObj.SetActive(false); });
+        DOVirtual.DelayedCall(0.5f, () => { countObj.SetActive(false); });
     }
 
     //UI
@@ -341,18 +344,27 @@ public class GameManager : Singleton<GameManager>
         
         comboText.transform.position = currentCat.transform.position;
         comboText.gameObject.SetActive(true);
-        DOVirtual.DelayedCall(0.5f, () => { comboText.gameObject.SetActive(false); });
+        DOVirtual.DelayedCall(0.5f, () =>
+        {
+            comboText.gameObject.SetActive(false);
+            
+        });
         
-        if (comboCountReal % 10 == 0)
+        
+        if (comboCountReal>9 && comboCountReal % 10 == 0 && isGameOver == false)
         {
             comboText.color = Color.white;
             comboText.colorGradient = gradient;
             comboText.enableVertexGradient = true;
             
-            comboText.text = "COMBO MAX";
+            pauseButton.gameObject.SetActive(false);
+            
+            comboText.text = "콤보 맥스";
             var pos = currentCat.transform.position;
+            
             DOVirtual.DelayedCall(0.5f, () =>
             {
+                if (isGameOver) return;
                 Time.timeScale = 0f;
                 Animator animator = currentCat.GetComponent<Animator>();
                 animator.updateMode = AnimatorUpdateMode.UnscaledTime;
@@ -374,7 +386,7 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            comboText.text = $"COMBO {comboCountReal}";
+            comboText.text = $"콤보 {comboCountReal}";
         }
 
        
@@ -405,7 +417,6 @@ public class GameManager : Singleton<GameManager>
         feverTimeTitle.enableVertexGradient = true;
         _um.OpenFeverPanel();
         _am.OnBgmPlay(1);
-        pauseButton.gameObject.SetActive(false);
 
         // 깜빡이기: CanvasGroup으로 알파 조절!
         canvasGroup.alpha = 1f;

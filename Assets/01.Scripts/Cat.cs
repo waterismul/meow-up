@@ -109,7 +109,6 @@ public class Cat : MonoBehaviour
             gm.CountCat(gameObject);
             
             gm.ComboInit(gameObject);
-            Debug.Log($"콤보는? {gm.comboCount}");
             
             UpdateCatColliders();
 

@@ -16,11 +16,14 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _choicePanel;
     [SerializeField] private GameObject _rulePanel;
     [SerializeField] private GameObject _feverPanel;
+
+    [SerializeField] private GameObject overCat;
     
     private GameManager gm;
     private ItemManager im;
     private ObjectPoolManager pool;
     private ShopUI si;
+    private AudioManager am;
     
 
     public bool IsPaused { get; private set; }
@@ -29,9 +32,12 @@ public class UIManager : Singleton<UIManager>
     {
         gm = GameManager.Instance;
         pool = ObjectPoolManager.Instance;
-        GoHome();
+        am = AudioManager.Instance;
         
-        InitSetting();
+        _homePanel.SetActive(true);
+        am.OnBgmPlay(0);
+        
+        //InitSetting();
         im = FindFirstObjectByType<ItemManager>();
         si = _shopPanel.GetComponent<ShopUI>();
         
@@ -46,17 +52,20 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenRulePanel()
     {
+        am.OnSfxPlay(4);
         _rulePanel.SetActive(true);
     }
 
     public void CloseRulePanel()
     {
+        am.OnSfxPlay(4);
         _rulePanel.SetActive(false);
     }
     
     
     public void OpenSettingPanel()
     {
+        am.OnSfxPlay(4);
         PauseInit();
         _settingPanel.SetActive(true);
         
@@ -64,6 +73,7 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenPausePanel()
     {
+        am.OnSfxPlay(4);
         PauseInit();
         _pausePanel.SetActive(true);
     }
@@ -72,14 +82,20 @@ public class UIManager : Singleton<UIManager>
     {
         PauseInit();
         _overPanel.SetActive(true);
+
+        Animator animator = overCat.GetComponent<Animator>();
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        animator.SetTrigger("Over");
+        am.OnBgmPlay(2);
+
     }
 
     public void OpenFeverPanel()
     {
         _feverPanel.SetActive(true);
         var pos = _feverPanel.GetComponent<RectTransform>();
-        pos.anchoredPosition = new Vector2(-1100f, 0);
-        pos.DOAnchorPos(new Vector2(0f, 0f), 1.5f)
+        pos.anchoredPosition = new Vector2(-1100f, -105f);
+        pos.DOAnchorPos(new Vector2(0f, -105f), 1.5f)
             .SetEase(Ease.OutQuad).SetUpdate(true);
     }
 
@@ -90,42 +106,50 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenShopPanel()
     {
+        am.OnSfxPlay(4);
         si.SaveCat();
         _shopPanel.SetActive(true);
     }
 
     public void OpenRegisterPanel()
     {
+        am.OnSfxPlay(4);
         _registerPanel.SetActive(true);
     }
 
     public void OpenChoicePanel()
     {
+        am.OnSfxPlay(4);
         _choicePanel.SetActive(true);
     }
 
     public void CloseChoicePanel()
     {
+        am.OnSfxPlay(4);
         _choicePanel.SetActive(false);
     }
 
     public void CloseRegisterPanel()
     {
+        am.OnSfxPlay(4);
         _registerPanel.SetActive(false);
     }
 
     public void CloseShopPanel()
     {
+        am.OnSfxPlay(4);
         _shopPanel.SetActive(false);
     }
 
     public void CloseOverPanel()
     {
+        am.OnSfxPlay(4);
         _overPanel.SetActive(false);
     }
 
     public void ClosePausePanel()
     {
+        am.OnSfxPlay(4);
         _pausePanel.SetActive(false);
         IsPaused = false;
         gm.resumed = true;
@@ -134,18 +158,22 @@ public class UIManager : Singleton<UIManager>
     
     public void CloseSettingPanel()
     {
+        am.OnSfxPlay(4);
         _settingPanel.SetActive(false);
     }
 
 
     public void GoHome()
     {
+        am.OnSfxPlay(4);
+        am.OnBgmPlay(0);
         CloseOverPanel();
         _homePanel.SetActive(true);
     }
 
     public void GoTry()
     {
+        am.OnBgmPlay(3);
         gm.StopAllCoroutines();
         pool.ResetPool();
         if (gm.InitSetting() == -1)
@@ -169,6 +197,7 @@ public class UIManager : Singleton<UIManager>
 
     public void GoGame()
     {
+        am.OnSfxPlay(4);
         bool anyUnlocked = false;
 
         for (int i = 0; i < 4; i++)

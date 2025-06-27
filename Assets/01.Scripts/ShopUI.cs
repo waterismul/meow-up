@@ -19,6 +19,7 @@ public class ShopUI : MonoBehaviour
     private Toggle _saveToggle;
 
     private GameManager gm;
+    private AudioManager am;
 
     private void Awake()
     {
@@ -49,30 +50,35 @@ public class ShopUI : MonoBehaviour
             switch (index)
             {
                 case 0:
+                    am.OnSfxPlay(4);
                     Debug.Log("갈색 고양이 선택됨!");
                     _constInfo.CatIndexInit(0);
                     PlayerPrefs.SetInt("catUnlocked_" + 0, 1);
                     PlayerPrefs.SetInt("selectedCatIndex", 0);
                     break;
                 case 1:
+                    am.OnSfxPlay(4);
                     Debug.Log("검정 고양이 선택됨!");
                     _constInfo.CatIndexInit(1);
                     PlayerPrefs.SetInt("catUnlocked_" + 1, 1);
                     PlayerPrefs.SetInt("selectedCatIndex", 1);
                     break;
                 case 2:
+                    am.OnSfxPlay(4);
                     Debug.Log("회색 고양이 선택됨!");
                     _constInfo.CatIndexInit(2);
                     PlayerPrefs.SetInt("catUnlocked_" + 2, 1);
                     PlayerPrefs.SetInt("selectedCatIndex", 3);
                     break;
                 case 3:
+                    am.OnSfxPlay(4);
                     Debug.Log("샴 고양이 선택됨!");
                     _constInfo.CatIndexInit(3);
                     PlayerPrefs.SetInt("catUnlocked_" + 3, 1);
                     PlayerPrefs.SetInt("selectedCatIndex", 3);
                     break;
                 default:
+                    am.OnSfxPlay(4);
                     Debug.Log("알 수 없는 고양이 선택됨!");
                     break;
             }
@@ -93,6 +99,8 @@ public class ShopUI : MonoBehaviour
     private void Start()
     {
         gm = GameManager.Instance;
+        am = AudioManager.Instance;
+        
         _constInfo = new ConstInfo();
         
         gm.constInfo =  _constInfo;

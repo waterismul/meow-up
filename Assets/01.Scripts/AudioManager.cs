@@ -29,7 +29,7 @@ public class AudioManager : Singleton<AudioManager>
         _sfxSlider.value = sfxValue;
         
         SetBGMVolume(_bgmSlider.value);
-        SetSFXVolume(_sfxSlider.value);
+        SetSaveSFXVolume(_sfxSlider.value);
         
         _bgmSlider.onValueChanged.AddListener(SetBGMVolume);
         _sfxSlider.onValueChanged.AddListener(SetSFXVolume);
@@ -51,6 +51,13 @@ public class AudioManager : Singleton<AudioManager>
 
     void SetSFXVolume(float value)
     {
+        OnSfxPlay(2);
+        float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20;
+        _audioMixer.SetFloat("sfx", dB);
+    }
+
+    void SetSaveSFXVolume(float value)
+    {
         float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20;
         _audioMixer.SetFloat("sfx", dB);
     }
@@ -60,7 +67,8 @@ public class AudioManager : Singleton<AudioManager>
         if (index >= 0 && index < _sfxClips.Length)
         {
             _sfxSource.clip = _sfxClips[index];
-            _sfxSource.Play();
+            if(!_sfxSource.isPlaying)
+                _sfxSource.Play();
         }
     }
     
@@ -77,6 +85,10 @@ public class AudioManager : Singleton<AudioManager>
         if (index >= 0 && index < _sfxClips.Length)
         {
             _bgmSource.clip = _bgmClips[index];
+            if (index == 2)
+                _bgmSource.loop = false;
+            else
+                _bgmSource.loop = true;
             _bgmSource.Play();
         }
     }
