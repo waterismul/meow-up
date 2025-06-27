@@ -11,13 +11,10 @@ using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
 {
-    
-    [Header("[Cat]")]
-    public List<Cat> cats;
+    [Header("[Cat]")] public List<Cat> cats;
     public int catCount;
-    
-    [Header("[GameUI]")]
-    public TextMeshProUGUI scoreText;
+
+    [Header("[GameUI]")] public TextMeshProUGUI scoreText;
     public TextMeshPro countText;
     public TextMeshPro comboText;
     public CanvasGroup canvasGroup;
@@ -28,25 +25,25 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Image gaugeTop;
     [SerializeField] private GameObject pauseButton;
     private VertexGradient gradient;
-    
+
     public int score;
     public float currentTime;
     public bool isGameOver;
     public bool resumed;
-  
-    
+
+
     [SerializeField] private TextMeshProUGUI resultText;
     [SerializeField] private TextMeshProUGUI bestText;
     public TextMeshProUGUI feverTimeTitle;
-    
+
     //game
-    private int _maxLife=5;
-    private float _maxTime=60;
+    private int _maxLife = 5;
+    private float _maxTime = 60;
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private int _currentLevel;
     private int _currentLife;
-    
+
     public ConstInfo constInfo;
     private ObjectPoolManager _pool;
     private UIManager _um;
@@ -56,14 +53,14 @@ public class GameManager : Singleton<GameManager>
     private bool hasSpawnedThisRound;
     private int bestscore;
     public int comboCount;
-    
+
     private void Start()
     {
         _pool = ObjectPoolManager.Instance;
         _um = UIManager.Instance;
         _am = AudioManager.Instance;
         constInfo = new ConstInfo();
-        
+
         Time.timeScale = 0f;
         _am.OnBgmPlay(0);
     }
@@ -76,45 +73,45 @@ public class GameManager : Singleton<GameManager>
         score = 0;
         currentTime = 0;
         Gradient();
-        
+
         //game init
-        scoreText.text = "점수 : "+score;
+        scoreText.text = "점수 : " + score;
         _currentLife = _maxLife;
         gaugeTop.fillAmount = 1f;
         downY = 0.875f;
         countObj.SetActive(false);
         comboText.gameObject.SetActive(false);
-        
-        
-        for (int i=0; i < _maxLife; i++)
+
+
+        for (int i = 0; i < _maxLife; i++)
         {
             life[i].transform.localScale = Vector3.one;
         }
-        
+
         floorObj.transform.position = new Vector3(0, -4.56f, 0);
         Color c = floorObj.GetComponent<Renderer>().material.color;
         c.a = 1f;
         floorObj.GetComponent<Renderer>().material.color = c;
-        
+
         //level init
         constInfo.LevelInit(0);
         comboCount = 0;
-        
+
         //cat init
         int selectedIndex = PlayerPrefs.GetInt("selectedCatIndex", -1);
         if (selectedIndex == -1) // 선택된 고양이 인덱스가 없어 -1이라면 return으로 빠져나옴
             return selectedIndex;
         constInfo.CatIndexInit(selectedIndex);
         Debug.Log(selectedIndex);
-        
+
         cats = new List<Cat>();
         cats.Clear();
         _pool.SpawnCatSetting(selectedIndex);
         StartCoroutine(SpawnCat());
-        
-        return selectedIndex; 
+
+        return selectedIndex;
     }
-    
+
     bool IsPointerOverUI()
     {
 #if UNITY_EDITOR
@@ -126,15 +123,15 @@ public class GameManager : Singleton<GameManager>
 #endif
     }
 
-    
+
     private void Update()
     {
         if (resumed)
         {
-            if(!Input.GetMouseButton(0))
+            if (!Input.GetMouseButton(0))
                 resumed = false;
         }
-        
+
         if (_um.IsPaused) return;
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
@@ -144,23 +141,23 @@ public class GameManager : Singleton<GameManager>
                 _catPrefabObjScript.Jumping();
         }
 
-        if(!isGameOver)
+        if (!isGameOver)
             UpdateTimeUI();
-            
     }
-    
+
 
     public IEnumerator SpawnCat()
     {
         yield return new WaitForSeconds(0.8f);
-        _catPrefabObj = _pool.GetPrefabObj(_pool.catPrefabObjQueue, _pool.catPrefabObj[constInfo.CurrentCatIndex], _pool.catPrefabObjParent);
+        _catPrefabObj = _pool.GetPrefabObj(_pool.catPrefabObjQueue, _pool.catPrefabObj[constInfo.CurrentCatIndex],
+            _pool.catPrefabObjParent);
         _catPrefabObjScript = _catPrefabObj.GetComponent<Cat>();
         _catPrefabObjScript.IsJumping = false;
-        _catPrefabObjScript.Init(()=>StartCoroutine(SpawnCat()));
+        _catPrefabObjScript.Init(() => StartCoroutine(SpawnCat()));
         _catPrefabObjScript.Swapping(constInfo.CurrentSwappingDur);
         _catPrefabObj.transform.position = new Vector3(0, _catPrefabObj.transform.position.y, 0);
+
         SpawnItem();
-        
     }
 
     private void SpawnItem()
@@ -170,44 +167,44 @@ public class GameManager : Singleton<GameManager>
         {
             hasSpawnedThisRound = true;
             int rand = Random.Range(0, 6);
-            if(rand >= 3)
+            rand = 3;
+            if (rand >=3 && !_im.timeObj.activeInHierarchy)
                 _im.SpawnItem(_im.timeObj);
-            else if(rand is 2 or 1)
+            else if (rand is 2 or 1 && !_im.pointObj.activeInHierarchy)
                 _im.SpawnItem(_im.pointObj);
-            else if(rand is 0)
+            else if (rand is 0 && !_im.minusObj.activeInHierarchy)
                 _im.SpawnItem(_im.minusObj);
         }
         else
         {
             hasSpawnedThisRound = false;
         }
-       
     }
-    
-    
+
+
     public IEnumerator DownCats()
     {
         yield return new WaitForSeconds(0.5f);
         foreach (Cat cat in cats)
         {
-            cat.transform.DOMoveY(cat.transform.position.y-downY, 0.5f);
+            cat.transform.DOMoveY(cat.transform.position.y - downY, 0.5f);
         }
 
         Color c = floorObj.GetComponent<Renderer>().material.color;
-        if(c.a!=0)
-            floorObj.transform.DOMoveY(floorObj.transform.position.y-downY, 0.5f).OnComplete(() =>
+        if (c.a != 0)
+            floorObj.transform.DOMoveY(floorObj.transform.position.y - downY, 0.5f).OnComplete(() =>
             {
                 Color c = floorObj.GetComponent<Renderer>().material.color;
                 c.a = 0;
                 floorObj.GetComponent<Renderer>().material.color = c;
             });
-        
-        if(_im.timeObj.activeSelf)
-            _im.timeObj.transform.DOMoveY(_im.timeObj.transform.position.y-downY, 0.5f);
-        if(_im.pointObj.activeSelf)
-            _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y-downY, 0.5f);
-        if(_im.minusObj.activeSelf)
-            _im.minusObj.transform.DOMoveY(_im.minusObj.transform.position.y-downY, 0.5f);
+
+        if (_im.timeObj.activeSelf)
+            _im.timeObj.transform.DOMoveY(_im.timeObj.transform.position.y - downY, 0.5f);
+        if (_im.pointObj.activeSelf)
+            _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y - downY, 0.5f);
+        if (_im.minusObj.activeSelf)
+            _im.minusObj.transform.DOMoveY(_im.minusObj.transform.position.y - downY, 0.5f);
     }
 
     private void GameOver()
@@ -216,12 +213,11 @@ public class GameManager : Singleton<GameManager>
         _um.OpenOverPanel();
         isGameOver = false;
         resultText.text = score.ToString();
-        
+
         var result = Mathf.Max(bestscore, score);
         PlayerPrefs.SetInt("bestscore", result);
         PlayerPrefs.Save();
         bestText.text = PlayerPrefs.GetInt("bestscore").ToString();
-        
     }
 
     public void CountCat(GameObject currentCat)
@@ -242,15 +238,12 @@ public class GameManager : Singleton<GameManager>
             countText.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
             countObj.transform.position = currentCat.transform.position + new Vector3(1f, 1f, transform.position.z);
         }
-        
+
         countText.text = catCount.ToString();
         countObj.SetActive(true);
-        DOVirtual.DelayedCall(0.5f, () =>
-        {
-            countObj.SetActive(false);
-        });
+        DOVirtual.DelayedCall(0.5f, () => { countObj.SetActive(false); });
     }
-    
+
     //UI
     public void DecreaseLife()
     {
@@ -259,14 +252,15 @@ public class GameManager : Singleton<GameManager>
             GameOver();
             return;
         }
+
         _currentLife--;
         UpdateLifeUI();
     }
-    
-    
+
+
     private void UpdateTimeUI()
     {
-        if(currentTime>=_maxTime) 
+        if (currentTime >= _maxTime)
             currentTime = _maxTime;
         currentTime += Time.deltaTime;
 
@@ -275,13 +269,11 @@ public class GameManager : Singleton<GameManager>
 
         if (ratio < 0.3f)
         {
-            gaugeTop.GetComponent<Image>().color = new Color(1f, 0f, 0f,1f);
-
+            gaugeTop.GetComponent<Image>().color = new Color(1f, 0f, 0f, 1f);
         }
-            
+
         else
         {
-            
             gaugeTop.GetComponent<Image>().color = new Color32(135, 89, 172, 255);
         }
 
@@ -289,9 +281,8 @@ public class GameManager : Singleton<GameManager>
         {
             GameOver();
         }
-
     }
-    
+
     private void UpdateLifeUI()
     {
         life[_currentLife].transform.DOScale(0f, 0.3f);
@@ -347,8 +338,8 @@ public class GameManager : Singleton<GameManager>
 
                     currentCat.transform.DOMoveX(4f, 2.5f).SetUpdate(true).OnComplete(() =>
                     {
-                     
-                        currentCat.transform.position = new Vector3(-2.3f, currentCat.transform.position.y, currentCat.transform.position.z);
+                        currentCat.transform.position = new Vector3(-2.3f, currentCat.transform.position.y,
+                            currentCat.transform.position.z);
                         currentCat.transform.DOMoveX(pos.x, 1f).SetUpdate(true).OnComplete(() =>
                         {
                             _am.OnSfxStop();
@@ -356,37 +347,28 @@ public class GameManager : Singleton<GameManager>
                         });
                         OnFeverTime();
                     });
-
-                
-
                 });
-                
+
                 break;
         }
 
-        if (comboCount > 1 && comboCount<7)
+        if (comboCount > 1 && comboCount < 7)
         {
             comboText.text = $"COMBO {comboCount}";
             comboText.transform.position = currentCat.transform.position;
             comboText.gameObject.SetActive(true);
-            DOVirtual.DelayedCall(0.5f, () =>
-            {
-                comboText.gameObject.SetActive(false);
-            });
+            DOVirtual.DelayedCall(0.5f, () => { comboText.gameObject.SetActive(false); });
         }
         else if (comboCount is 7)
         {
             comboText.text = "COMBO MAX";
             comboText.transform.position = currentCat.transform.position;
             comboText.gameObject.SetActive(true);
-            DOVirtual.DelayedCall(0.5f, () =>
-            {
-                comboText.gameObject.SetActive(false);
-            });
+            DOVirtual.DelayedCall(0.5f, () => { comboText.gameObject.SetActive(false); });
         }
-            
-        score += 100+100*(comboCount-1);
-        scoreText.text = "점수 : "+ score;
+
+        score += 100 + 100 * (comboCount - 1);
+        scoreText.text = "점수 : " + score;
     }
 
     public void ComboReset()
@@ -399,10 +381,10 @@ public class GameManager : Singleton<GameManager>
     {
         // Gradient 생성
         gradient = new VertexGradient(
-            new Color32(200, 75, 75, 255),    // topLeft (밝은 빨강)
-            new Color32(255, 212, 9, 255),   // topRight (밝은 주황)
-            new Color32(90, 170, 108, 255),  // bottomLeft (하늘색)
-            new Color32(90, 172, 255, 255) 
+            new Color32(200, 75, 75, 255), // topLeft (밝은 빨강)
+            new Color32(255, 212, 9, 255), // topRight (밝은 주황)
+            new Color32(90, 170, 108, 255), // bottomLeft (하늘색)
+            new Color32(90, 172, 255, 255)
         );
     }
 
@@ -414,15 +396,15 @@ public class GameManager : Singleton<GameManager>
         _um.OpenFeverPanel();
         _am.OnBgmPlay(1);
         pauseButton.gameObject.SetActive(false);
-        
+
         // 깜빡이기: CanvasGroup으로 알파 조절!
         canvasGroup.alpha = 1f;
         Tween tween = canvasGroup.DOFade(0f, 0.5f)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine)
             .SetUpdate(true);
-        
-        DOVirtual.DelayedCall(5f,()=>
+
+        DOVirtual.DelayedCall(5f, () =>
         {
             _um.CloseFeverPanel();
             Time.timeScale = 1f;
@@ -431,8 +413,5 @@ public class GameManager : Singleton<GameManager>
             tween.Kill(true);
             ComboReset();
         });
-        
-
     }
-    
 }

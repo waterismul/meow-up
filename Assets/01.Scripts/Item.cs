@@ -15,8 +15,15 @@ public class Item : MonoBehaviour
             gameObject.transform.localScale = Vector3.zero;
             gameObject.SetActive(false);
         }
-            
     }
     
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Floor"))
+        {
+            gameObject.transform.localScale = Vector3.zero;
+            gameObject.SetActive(false);
+        }
+    }
     
 }

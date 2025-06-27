@@ -43,8 +43,8 @@ public class ItemManager : MonoBehaviour
             var pointX = Random.Range(-1, 2);
             if (itemObj.name == "minus item")
                 pointX = 0;
-            itemObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
             itemObj.SetActive(true);
+            itemObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
             itemObj.transform.DOScale(1f, 0.5f);
         }
         
