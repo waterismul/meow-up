@@ -167,10 +167,9 @@ public class GameManager : Singleton<GameManager>
         {
             hasSpawnedThisRound = true;
             int rand = Random.Range(0, 6);
-            rand = 3;
             if (rand >=3 && !_im.timeObj.activeInHierarchy)
                 _im.SpawnItem(_im.timeObj);
-            else if (rand is 2 or 1 && !_im.pointObj.activeInHierarchy)
+            else if (rand is 2 or 1 &&  !_im.pointObj.activeInHierarchy)
                 _im.SpawnItem(_im.pointObj);
             else if (rand is 0 && !_im.minusObj.activeInHierarchy)
                 _im.SpawnItem(_im.minusObj);
@@ -184,15 +183,15 @@ public class GameManager : Singleton<GameManager>
 
     public IEnumerator DownCats()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.3f);
         foreach (Cat cat in cats)
         {
-            cat.transform.DOMoveY(cat.transform.position.y - downY, 0.5f);
+            cat.transform.DOMoveY(cat.transform.position.y - downY, 0.3f);
         }
 
         Color c = floorObj.GetComponent<Renderer>().material.color;
         if (c.a != 0)
-            floorObj.transform.DOMoveY(floorObj.transform.position.y - downY, 0.5f).OnComplete(() =>
+            floorObj.transform.DOMoveY(floorObj.transform.position.y - downY, 0.3f).OnComplete(() =>
             {
                 Color c = floorObj.GetComponent<Renderer>().material.color;
                 c.a = 0;
@@ -200,11 +199,14 @@ public class GameManager : Singleton<GameManager>
             });
 
         if (_im.timeObj.activeSelf)
-            _im.timeObj.transform.DOMoveY(_im.timeObj.transform.position.y - downY, 0.5f);
+            _im.timeObj.transform.DOMoveY(_im.timeObj.transform.position.y - downY, 0.3f);
         if (_im.pointObj.activeSelf)
-            _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y - downY, 0.5f);
+            _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y - downY, 0.3f);
         if (_im.minusObj.activeSelf)
-            _im.minusObj.transform.DOMoveY(_im.minusObj.transform.position.y - downY, 0.5f);
+            _im.minusObj.transform.DOMoveY(_im.minusObj.transform.position.y - downY, 0.3f);
+        
+        if(comboText.gameObject.activeSelf)
+            comboText.transform.DOMoveY(comboText.transform.position.y - downY, 0.3f);
     }
 
     private void GameOver()
@@ -241,7 +243,7 @@ public class GameManager : Singleton<GameManager>
 
         countText.text = catCount.ToString();
         countObj.SetActive(true);
-        DOVirtual.DelayedCall(0.5f, () => { countObj.SetActive(false); });
+        DOVirtual.DelayedCall(0.2f, () => { countObj.SetActive(false); });
     }
 
     //UI
@@ -367,6 +369,7 @@ public class GameManager : Singleton<GameManager>
             DOVirtual.DelayedCall(0.5f, () => { comboText.gameObject.SetActive(false); });
         }
 
+      
         score += 100 + 100 * (comboCount - 1);
         scoreText.text = "점수 : " + score;
     }
