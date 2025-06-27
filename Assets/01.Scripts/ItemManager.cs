@@ -62,6 +62,8 @@ public class ItemManager : MonoBehaviour
         am.OnItemPlay(1);
         gm.currentTime -= timeBonus;
         OffItemTime(timeObj);
+        
+        Debug.Log(gm.currentTime+"몇초냐");
     }
     
     public void GetItemMinus()

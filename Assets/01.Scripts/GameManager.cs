@@ -53,6 +53,7 @@ public class GameManager : Singleton<GameManager>
     private bool hasSpawnedThisRound;
     private int bestscore;
     public int comboCount;
+    public int comboCountReal;
 
     private void Start()
     {
@@ -94,8 +95,7 @@ public class GameManager : Singleton<GameManager>
         floorObj.GetComponent<Renderer>().material.color = c;
 
         //level init
-        constInfo.LevelInit(0);
-        comboCount = 0;
+        ComboReset();
 
         //cat init
         int selectedIndex = PlayerPrefs.GetInt("selectedCatIndex", -1);
@@ -167,9 +167,9 @@ public class GameManager : Singleton<GameManager>
         {
             hasSpawnedThisRound = true;
             int rand = Random.Range(0, 6);
-            if (rand >=3 && !_im.timeObj.activeInHierarchy)
+            if (rand >= 3 && !_im.timeObj.activeInHierarchy)
                 _im.SpawnItem(_im.timeObj);
-            else if (rand is 2 or 1 &&  !_im.pointObj.activeInHierarchy)
+            else if (rand is 2 or 1 && !_im.pointObj.activeInHierarchy)
                 _im.SpawnItem(_im.pointObj);
             else if (rand is 0 && !_im.minusObj.activeInHierarchy)
                 _im.SpawnItem(_im.minusObj);
@@ -204,8 +204,8 @@ public class GameManager : Singleton<GameManager>
             _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y - downY, 0.3f);
         if (_im.minusObj.activeSelf)
             _im.minusObj.transform.DOMoveY(_im.minusObj.transform.position.y - downY, 0.3f);
-        
-        if(comboText.gameObject.activeSelf)
+
+        if (comboText.gameObject.activeSelf)
             comboText.transform.DOMoveY(comboText.transform.position.y - downY, 0.3f);
     }
 
@@ -262,8 +262,8 @@ public class GameManager : Singleton<GameManager>
 
     private void UpdateTimeUI()
     {
-        if (currentTime >= _maxTime)
-            currentTime = _maxTime;
+        if (currentTime <=0)
+            currentTime = 0;
         currentTime += Time.deltaTime;
 
         float ratio = Mathf.Clamp01(1f - (currentTime / _maxTime));
@@ -294,31 +294,38 @@ public class GameManager : Singleton<GameManager>
     public void ComboInit(GameObject currentCat)
     {
         comboCount++;
+        comboCountReal++;
+
         comboCount = constInfo.LevelStep(comboCount);
         constInfo.LevelInit(comboCount);
+        
+        score += 100+ 100 * (comboCountReal / 10);
+        scoreText.text = "점수 : " + score;
 
-        switch (comboCount)
+        switch (comboCountReal / 10)
         {
             case 0:
-                comboText.gameObject.SetActive(false);
-                break;
-            case 1:
-                comboText.gameObject.SetActive(false);
-                break;
-            case 2:
                 comboText.color = new Color32(255, 96, 106, 255);
                 comboText.enableVertexGradient = false;
                 break;
-            case 3:
+            case 1:
                 comboText.color = new Color32(255, 153, 17, 255);
                 comboText.enableVertexGradient = false;
                 break;
-            case 4:
+            case 2:
+                comboText.color = new Color32(255, 212, 70, 255);
+                comboText.enableVertexGradient = false;
+                break;
+            case 3:
                 comboText.color = new Color32(90, 172, 108, 255);
                 comboText.enableVertexGradient = false;
                 break;
-            case 5:
+            case 4:
                 comboText.color = new Color32(90, 172, 255, 255);
+                comboText.enableVertexGradient = false;
+                break;
+            case 5:
+                comboText.color = new Color32(56, 75, 187, 255);
                 comboText.enableVertexGradient = false;
                 break;
             case 6:
@@ -329,55 +336,55 @@ public class GameManager : Singleton<GameManager>
                 comboText.color = Color.white;
                 comboText.colorGradient = gradient;
                 comboText.enableVertexGradient = true;
-                var pos = currentCat.transform.position;
-                DOVirtual.DelayedCall(0.5f, () =>
-                {
-                    Time.timeScale = 0f;
-                    Animator animator = currentCat.GetComponent<Animator>();
-                    animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-                    animator.SetTrigger("Fever");
-                    _am.OnSfxPlay(3);
-
-                    currentCat.transform.DOMoveX(4f, 2.5f).SetUpdate(true).OnComplete(() =>
-                    {
-                        currentCat.transform.position = new Vector3(-2.3f, currentCat.transform.position.y,
-                            currentCat.transform.position.z);
-                        currentCat.transform.DOMoveX(pos.x, 1f).SetUpdate(true).OnComplete(() =>
-                        {
-                            _am.OnSfxStop();
-                            animator.SetTrigger("Land");
-                        });
-                        OnFeverTime();
-                    });
-                });
-
                 break;
         }
-
-        if (comboCount > 1 && comboCount < 7)
+        
+        comboText.transform.position = currentCat.transform.position;
+        comboText.gameObject.SetActive(true);
+        DOVirtual.DelayedCall(0.5f, () => { comboText.gameObject.SetActive(false); });
+        
+        if (comboCountReal % 10 == 0)
         {
-            comboText.text = $"COMBO {comboCount}";
-            comboText.transform.position = currentCat.transform.position;
-            comboText.gameObject.SetActive(true);
-            DOVirtual.DelayedCall(0.5f, () => { comboText.gameObject.SetActive(false); });
-        }
-        else if (comboCount is 7)
-        {
+            comboText.color = Color.white;
+            comboText.colorGradient = gradient;
+            comboText.enableVertexGradient = true;
+            
             comboText.text = "COMBO MAX";
-            comboText.transform.position = currentCat.transform.position;
-            comboText.gameObject.SetActive(true);
-            DOVirtual.DelayedCall(0.5f, () => { comboText.gameObject.SetActive(false); });
+            var pos = currentCat.transform.position;
+            DOVirtual.DelayedCall(0.5f, () =>
+            {
+                Time.timeScale = 0f;
+                Animator animator = currentCat.GetComponent<Animator>();
+                animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                animator.SetTrigger("Fever");
+                _am.OnSfxPlay(3);
+
+                currentCat.transform.DOMoveX(4f, 2.5f).SetUpdate(true).OnComplete(() =>
+                {
+                    currentCat.transform.position = new Vector3(-2.3f, currentCat.transform.position.y,
+                        currentCat.transform.position.z);
+                    currentCat.transform.DOMoveX(pos.x, 1f).SetUpdate(true).OnComplete(() =>
+                    {
+                        _am.OnSfxStop();
+                        animator.SetTrigger("Land");
+                    });
+                    OnFeverTime();
+                });
+            });
+        }
+        else
+        {
+            comboText.text = $"COMBO {comboCountReal}";
         }
 
-      
-        score += 100 + 100 * (comboCount - 1);
-        scoreText.text = "점수 : " + score;
+       
     }
 
     public void ComboReset()
     {
         constInfo.LevelInit(0);
         comboCount = 0;
+        comboCountReal = 0;
     }
 
     public void Gradient()
@@ -414,7 +421,6 @@ public class GameManager : Singleton<GameManager>
             _am.OnBgmPlay(0);
             pauseButton.gameObject.SetActive(true);
             tween.Kill(true);
-            ComboReset();
         });
     }
 }

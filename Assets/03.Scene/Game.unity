@@ -10831,6 +10831,7 @@ MonoBehaviour:
   feverTimeTitle: {fileID: 1389453280}
   _im: {fileID: 657849793}
   comboCount: 0
+  comboCountReal: 0
 --- !u!4 &919992314
 Transform:
   m_ObjectHideFlags: 0
@@ -23554,8 +23555,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4290399032
+  m_fontColor: {r: 0.21795015, g: 0.29382974, b: 0.72955966, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
