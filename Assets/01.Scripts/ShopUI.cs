@@ -28,6 +28,8 @@ public class ShopUI : MonoBehaviour
         {
             toggle.isOn = false;
         }
+
+       
     }
 
     public void OnToggleChanged(Toggle changedToggle)
@@ -106,6 +108,11 @@ public class ShopUI : MonoBehaviour
         gm.constInfo =  _constInfo;
         
         registerButton.onClick.AddListener(OnRegisterButton);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            RegisterSetting(i);
+        }
         
         SaveCat();
         
