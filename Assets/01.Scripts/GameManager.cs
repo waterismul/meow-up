@@ -114,7 +114,6 @@ public class GameManager : Singleton<GameManager>
         return selectedIndex;
     }
 
-
     private void Update()
     {
         if (_um.IsPaused) return;
@@ -122,18 +121,18 @@ public class GameManager : Singleton<GameManager>
         Vector2 touchPos = Vector2.zero;
         bool touchDown = false;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
         if (Input.GetMouseButtonDown(0))
         {
             touchDown = true;
             touchPos = Input.mousePosition;
         }
 #else
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            touchDown = true;
-            touchPos = Input.GetTouch(0).position;
-        }
+    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+    {
+        touchDown = true;
+        touchPos = Input.GetTouch(0).position;
+    }
 #endif
 
         if (touchDown)
@@ -147,7 +146,6 @@ public class GameManager : Singleton<GameManager>
             UpdateTimeUI();
             UpdateCountUI();
         }
-            
     }
 
     void TryJump()
@@ -169,6 +167,7 @@ public class GameManager : Singleton<GameManager>
 
         return results.Count > 0;
     }
+
 
     public IEnumerator SpawnCat()
     {

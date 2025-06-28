@@ -109,12 +109,14 @@ public class ShopUI : MonoBehaviour
         
         registerButton.onClick.AddListener(OnRegisterButton);
         
-        for (int i = 0; i < 4; i++)
+            
+        SaveCat();
+        
+        for (int i = 0; i < 4; i++) //임시 모든 고양이 등록 코드
         {
             RegisterSetting(i);
         }
-        
-        SaveCat();
+    
         
     }
 
@@ -157,19 +159,19 @@ public class ShopUI : MonoBehaviour
     {
         switch (couponNumber.text)
         {
-            case "browncat":
+            case "꽁꽁얼어붙은한강위를":
                 RegisterSetting(0);
                 PlayerPrefs.SetInt("catUnlocked_" + 0, 1);
                 break;
-            case "blackcat":
+            case "고양이한테생선을":
                 RegisterSetting(1);
                 PlayerPrefs.SetInt("catUnlocked_" + 1, 1);
                 break;
-            case "graycat":
+            case "냥냥펀치":
                 RegisterSetting(2);
                 PlayerPrefs.SetInt("catUnlocked_" + 2, 1);
                 break;
-            case "sharmcat":
+            case "낭만고양이":
                 RegisterSetting(3);
                 PlayerPrefs.SetInt("catUnlocked_" + 3, 1);
                 break;
