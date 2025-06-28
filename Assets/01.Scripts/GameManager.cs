@@ -114,6 +114,7 @@ public class GameManager : Singleton<GameManager>
 
     bool IsPointerOverUI()
     {
+        if (EventSystem.current == null) return false;
 #if UNITY_EDITOR
         return EventSystem.current.IsPointerOverGameObject(); // 마우스용
 #else
@@ -135,7 +136,6 @@ public class GameManager : Singleton<GameManager>
         if (_um.IsPaused) return;
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
-            if (IsPointerOverUI()) return;
             if (_catPrefabObjScript is null) return;
             if (!_catPrefabObjScript.IsJumping)
                 _catPrefabObjScript.Jumping();
