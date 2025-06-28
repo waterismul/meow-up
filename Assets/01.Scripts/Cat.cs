@@ -21,6 +21,9 @@ public class Cat : MonoBehaviour
     private ObjectPoolManager pool;
     private SpriteRenderer sr;
     private AudioManager am;
+
+    private Vector3 leftX;
+    private Vector3 rightX;
     
     public bool IsJumping
     {
@@ -36,8 +39,6 @@ public class Cat : MonoBehaviour
         gm = GameManager.Instance;
         
         am = AudioManager.Instance;
-
-       
     }
 
     private void Update()
@@ -54,27 +55,47 @@ public class Cat : MonoBehaviour
         OnNextCatCallback = onNextCatCallback;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        transform.position = new Vector3(posX, posY, transform.position.z);
+        
+
     }
+    
+    private void OnEnable()
+    {
+        float camZ = Mathf.Abs(Camera.main.transform.position.z);
+        transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, camZ));
+        rightX = Camera.main.ViewportToWorldPoint(new Vector3(0.85f, 0.1f, camZ));
+        leftX = Camera.main.ViewportToWorldPoint(new Vector3(0.15f, 0.1f, camZ));
+    }
+
 
     public void Swapping(float dur)
     {
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 8;
         
-        float leftX = -2.3f;
-        float rightX = 2.3f;
+        // swappingTween = transform.DOMoveX(rightX.x, dur/2)
+        //     .SetEase(Ease.Linear).OnComplete(() =>
+        //     {
+        //         swappingTween = transform.DOMoveX(leftX.x, dur)
+        //             .SetEase(Ease.Linear)
+        //             .SetLoops(-1, LoopType.Yoyo)
+        //             .From(rightX.x);
+        //
+        //     });
         
-        swappingTween = transform.DOMoveX(rightX, dur/2)
-            .SetEase(Ease.Linear).OnComplete(() =>
+        swappingTween = transform.DOMoveX(rightX.x, dur/2)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
             {
-                swappingTween = transform.DOMoveX(leftX, dur)
+                // 시작 전 위치 조절 → 부드럽게 시작
+                transform.position = rightX;
+                
+                swappingTween = transform.DOMoveX(leftX.x, dur)
                     .SetEase(Ease.Linear)
-                    .SetLoops(-1, LoopType.Yoyo)
-                    .From(rightX);
-
+                    .SetLoops(-1, LoopType.Yoyo);
             });
 
+  
     }
 
     public void Jumping()

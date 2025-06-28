@@ -8,7 +8,7 @@ public class FeverButton : MonoBehaviour
 {
     private GameManager gm;
     private AudioManager am;
-    private int pointBonus=100;
+    private int pointBonus=10;
     
     public void FeverTimeGetItem()
     {
@@ -19,13 +19,13 @@ public class FeverButton : MonoBehaviour
         gm.score += pointBonus;
         gm.scoreText.text = "점수 : "+gm.score;
         
-        transform.localScale = Vector3.zero;
+        gameObject.GetComponent<Button>().interactable = false;
 
     }
 
     private void OnEnable()
     {
-        transform.localScale = Vector3.one;
+        gameObject.GetComponent<Button>().interactable = true;
     }
 }
 

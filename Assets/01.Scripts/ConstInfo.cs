@@ -19,7 +19,7 @@ public class ConstInfo
 
     public void LevelInit(int level)
     {
-        swappingDur = new float[10] { 1.3f, 1.2f, 1.1f, 1f, 0.9f, 0.8f, 0.7f , 0.7f, 0.7f, 0.7f};
+        swappingDur = new float[10] { 1.3f, 1.2f, 1.1f, 1f, 0.9f, 0.8f, 0.7f , 0.6f, 0.5f, 0.5f};
         currentSwappingDur = swappingDur[level];
     }
     

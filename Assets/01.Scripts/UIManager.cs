@@ -94,8 +94,8 @@ public class UIManager : Singleton<UIManager>
     {
         _feverPanel.SetActive(true);
         var pos = _feverPanel.GetComponent<RectTransform>();
-        pos.anchoredPosition = new Vector2(-1100f, -120f);
-        pos.DOAnchorPos(new Vector2(0f, -120f), 1.5f)
+        pos.anchoredPosition = new Vector2(-1100f, 0);
+        pos.DOAnchorPos(Vector2.zero, 1.5f)
             .SetEase(Ease.OutQuad).SetUpdate(true);
     }
 

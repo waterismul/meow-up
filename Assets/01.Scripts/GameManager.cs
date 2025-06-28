@@ -24,6 +24,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
     [SerializeField] private GameObject pauseButton;
+
+    [SerializeField] private Image countGaugeTop;
     private VertexGradient gradient;
 
     public int score;
@@ -112,39 +114,61 @@ public class GameManager : Singleton<GameManager>
         return selectedIndex;
     }
 
-    bool IsPointerOverUI()
-    {
-        if (EventSystem.current == null) return false;
-#if UNITY_EDITOR
-        return EventSystem.current.IsPointerOverGameObject(); // 마우스용
-#else
-    if (Input.touchCount > 0)
-        return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId); // 터치용
-    return false;
-#endif
-    }
-
 
     private void Update()
     {
-        if (resumed)
-        {
-            if (!Input.GetMouseButton(0))
-                resumed = false;
-        }
-
         if (_um.IsPaused) return;
-        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
+
+        Vector2 touchPos = Vector2.zero;
+        bool touchDown = false;
+
+#if UNITY_EDITOR
+        if (Input.GetMouseButtonDown(0))
         {
-            if (_catPrefabObjScript is null) return;
-            if (!_catPrefabObjScript.IsJumping)
-                _catPrefabObjScript.Jumping();
+            touchDown = true;
+            touchPos = Input.mousePosition;
+        }
+#else
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            touchDown = true;
+            touchPos = Input.GetTouch(0).position;
+        }
+#endif
+
+        if (touchDown)
+        {
+            if (IsPointerOverUIPos(touchPos)) return;
+            TryJump();
         }
 
         if (!isGameOver)
+        {
             UpdateTimeUI();
+            UpdateCountUI();
+        }
+            
     }
 
+    void TryJump()
+    {
+        if (_catPrefabObjScript is null) return;
+        if (!_catPrefabObjScript.IsJumping)
+            _catPrefabObjScript.Jumping();
+    }
+
+    bool IsPointerOverUIPos(Vector2 screenPos)
+    {
+        if (EventSystem.current == null) return false;
+
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = screenPos;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        return results.Count > 0;
+    }
 
     public IEnumerator SpawnCat()
     {
@@ -229,8 +253,7 @@ public class GameManager : Singleton<GameManager>
     {
         cats.Add(currentCat.GetComponent<Cat>());
         catCount += 1;
-
-
+        
         if (currentCat.transform.position.x > 1.1f)
         {
             countObj.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
@@ -287,6 +310,15 @@ public class GameManager : Singleton<GameManager>
             GameOver();
         }
     }
+    
+    private void UpdateCountUI()
+    {
+        float ratio = catCount / 80f;
+        countGaugeTop.fillAmount = ratio;
+        
+        countGaugeTop.GetComponent<Image>().color = new Color32(255, 153, 17, 255);
+        
+    }
 
     private void UpdateLifeUI()
     {
@@ -336,6 +368,11 @@ public class GameManager : Singleton<GameManager>
                 comboText.enableVertexGradient = false;
                 break;
             case 7:
+                comboText.color = Color.white;
+                comboText.colorGradient = gradient;
+                comboText.enableVertexGradient = true;
+                break;
+            default:
                 comboText.color = Color.white;
                 comboText.colorGradient = gradient;
                 comboText.enableVertexGradient = true;
@@ -429,7 +466,7 @@ public class GameManager : Singleton<GameManager>
         {
             _um.CloseFeverPanel();
             Time.timeScale = 1f;
-            _am.OnBgmPlay(0);
+            _am.OnBgmPlay(3);
             pauseButton.gameObject.SetActive(true);
             tween.Kill(true);
         });
