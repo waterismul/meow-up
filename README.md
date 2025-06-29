@@ -47,3 +47,34 @@
 - 검은색 고양이 : 고양이한테생선을<br>
 - 회색 고양이 : 냥냥펀치<br>
 - 샴 고양이 : 낭만고양이
+
+## 🎨 사용한 에셋
+
+---
+다음 에셋들은 Unity Asset Store 및 외부 폰트에서 가져왔습니다:
+
+- [Pet Cats Pixel Art Pack](https://assetstore.unity.com/packages/2d/characters/pet-cats-pixel-art-pack-248340)
+- [Simple Free Pixel Art Styled UI Pack](https://assetstore.unity.com/packages/2d/gui/icons/simple-free-pixel-art-styled-ui-pack-165012)
+- [Simple UI Icons](https://assetstore.unity.com/packages/2d/gui/icons/simple-ui-icons-311704)
+- [40 Simple Icons - Free](https://assetstore.unity.com/packages/2d/gui/icons/40-simple-icons-free-171008)
+- [2D Simple UI Pack](https://assetstore.unity.com/packages/2d/gui/icons/2d-simple-ui-pack-218050)
+- [Galmuri Pixel Font (갈무리 폰트)](https://quiple.dev/galmuri)
+
+---
+
+## 🔊 사용한 사운드
+
+---
+다음 사운드는 공공누리(공유마당)에서 제공된 저작권 자유 음원을 사용하였습니다:
+
+- [사운드1](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13252844&menuNo=200020)
+- [고양이E](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13252843&menuNo=200020)
+- [사운드2](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13262866&menuNo=200020)
+- [사운드3](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13254742&menuNo=200020)
+- [사운드4](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13254840&menuNo=200020)
+- [사운드5](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13254883&menuNo=200020)
+- [사운드6](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13262835&menuNo=200020)
+- [사운드7](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13253385&menuNo=200020)
+- [사운드8](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13253534&menuNo=200020)
+- [사운드9](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13355412&menuNo=200020)
+
