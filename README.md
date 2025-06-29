@@ -14,7 +14,7 @@
 ## 📷 스크린샷
 | 게임 화면 | 피버 모드 | 다양한 블록 |
 |-----------|-----------|--------------|
-| ![game1](./images/game1.png) | ![fever](./images/fever.png) | ![blocks](./images/blocks.png) |
+| <img src="https://i.ibb.co/5gspKyL8/meow-game.jpg" alt="meowup-game" width="20%">| <img src="https://i.ibb.co/tydm4jr/meow-fever.jpg" alt="meowup-fever" width="20%"> | <img src="https://i.ibb.co/fdfwZmtk/meow-blocks.jpg" alt="meow-blocks" alt="meowup-blocks" width="20%">) |
 
 ## ⚙️ 개발 환경
 - **Unity** 2022.3.x
@@ -41,5 +41,6 @@
 [게임 플레이 해보기 (WebGL)](https://your-webgl-build-link.com)
 
 ## 🐈‍⬛ 고양이 암호
+<img src="https://i.ibb.co/gMn9cBWL/meow-pick.jpg" alt="meowup-pick" width="20%">
 - 검은색 고양이 : 꽁꽁얼어붙은한강위를
 - 갈색 고양이 : 
