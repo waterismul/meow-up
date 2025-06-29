@@ -12,12 +12,10 @@
 - 🔊 콤보 사운드와 피버 모드
 
 ## 📷 스크린샷
-<div align="center">
-| 게임 화면 | 피버 모드 | 다양한 블록 |
-|:---------:|:---------:|:------------:|
-| <img src="https://i.ibb.co/5gspKyL8/meow-game.jpg" alt="meowup-game" width="100%"> | <img src="https://i.ibb.co/tydm4jr/meow-fever.jpg" alt="meowup-fever" width="100%"> | <img src="https://i.ibb.co/fdfwZmtk/meow-blocks.jpg" alt="meowup-blocks" width="100%"> |
+| <div align="center">게임 화면</div> | <div align="center">피버 모드</div> | <div align="center">다양한 블록</div> |
+|:--:|:--:|:--:|
+| <div align="center"><img src="https://i.ibb.co/5gspKyL8/meow-game.jpg" alt="meowup-game" width="100%"></div> | <div align="center"><img src="https://i.ibb.co/tydm4jr/meow-fever.jpg" alt="meowup-fever" width="100%"></div> | <div align="center"><img src="https://i.ibb.co/fdfwZmtk/meow-blocks.jpg" alt="meowup-blocks" width="100%"></div> |
 
-</div>
 
 
 ## ⚙️ 개발 환경
