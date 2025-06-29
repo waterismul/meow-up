@@ -1,9 +1,9 @@
 # 🐾 Meow Up - Cat 쌓기
 
-<table>
+<table border="0">
   <tr>
     <td width="25%">
-       <img src="https://i.ibb.co/hFXmrhJF/meow-picture.png" alt="meowup-banner" width="80%">
+       <img src="https://i.ibb.co/hFXmrhJF/meow-picture.png" alt="meowup-banner" width="300%">
     </td>
     <td>
     <img src="https://i.ibb.co/VpwbWYN9/meow-home.jpg" alt="meowup-banner" width="20%">
