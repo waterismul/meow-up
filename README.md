@@ -3,10 +3,10 @@
 <table>
   <tr>
     <td width="50%">
-       <img src="https://i.ibb.co/hFXmrhJF/meow-picture.png" alt="meowup-banner" width="80%">
+       <img src="https://i.ibb.co/hFXmrhJF/meow-picture.png" alt="meowup-banner" width="100%">
     </td>
     <td>
-    <img src="https://i.ibb.co/VpwbWYN9/meow-home.jpg" alt="meowup-banner" width="20%">
+    <img src="https://i.ibb.co/VpwbWYN9/meow-home.jpg" alt="meowup-banner" width="100%">
     </td>
   </tr>
 </table>
