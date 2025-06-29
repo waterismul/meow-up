@@ -1,6 +1,6 @@
 # 🐾 Meow Up - Cat 쌓기
 
-![meowup-banner](https://ibb.co/1JzBfGnQ) <!-- 이미지 넣을 예정이면 여기에 추가 -->
+![meowup-banner](https://i.ibb.co/VpwbWYN9/meow-home.jpg) <!-- 이미지 넣을 예정이면 여기에 추가 -->
 
 ## 🎮 소개
 'Meow Up'은 귀여운 고양이를 하나씩 쌓아올려 최고 높이를 기록하는 캐쥬얼 아케이드 게임입니다.  
