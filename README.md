@@ -39,7 +39,7 @@
 - **Mobile**: 터치로 낙하
 
 ## 🚀 게임하러 가기
-[게임 플레이 해보기 (WebGL)](https://your-webgl-build-link.com)
+[게임 플레이 해보기 (WebGL)](https://waterismul.github.io/meow-up-game/)
 
 ## 🐈‍⬛ 고양이 암호
 <img src="https://i.ibb.co/gMn9cBWL/meow-pick.jpg" alt="meowup-pick" width="20%">
