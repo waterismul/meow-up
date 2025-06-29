@@ -49,8 +49,6 @@
 - 샴 고양이 : 낭만고양이
 
 ## 🎨 사용한 에셋
-
----
 다음 에셋들은 Unity Asset Store 및 외부 폰트에서 가져왔습니다:
 
 - [Pet Cats Pixel Art Pack](https://assetstore.unity.com/packages/2d/characters/pet-cats-pixel-art-pack-248340)
@@ -60,11 +58,7 @@
 - [2D Simple UI Pack](https://assetstore.unity.com/packages/2d/gui/icons/2d-simple-ui-pack-218050)
 - [Galmuri Pixel Font (갈무리 폰트)](https://quiple.dev/galmuri)
 
----
-
 ## 🔊 사용한 사운드
-
----
 다음 사운드는 공공누리(공유마당)에서 제공된 저작권 자유 음원을 사용하였습니다:
 
 - [사운드1](https://gongu.copyright.or.kr/gongu/wrt/wrt/view.do?wrtSn=13252844&menuNo=200020)
