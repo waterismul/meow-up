@@ -6,7 +6,7 @@
        <img src="https://i.ibb.co/hFXmrhJF/meow-picture.png" alt="meowup-banner" width="100%">
     </td>
     <td>
-    <img src="https://i.ibb.co/VpwbWYN9/meow-home.jpg" alt="meowup-banner" width="100%">
+    <img src="https://i.ibb.co/VpwbWYN9/meow-home.jpg" alt="meowup-banner" width="50%">
     </td>
   </tr>
 </table>
