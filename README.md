@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <td width="25%">
+    <td width="50%">
        <img src="https://i.ibb.co/hFXmrhJF/meow-picture.png" alt="meowup-banner" width="80%">
     </td>
     <td>
