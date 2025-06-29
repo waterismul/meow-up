@@ -12,9 +12,13 @@
 - 🔊 콤보 사운드와 피버 모드
 
 ## 📷 스크린샷
+<div align="center">
 | 게임 화면 | 피버 모드 | 다양한 블록 |
-|-----------|-----------|--------------|
-| <img src="https://i.ibb.co/5gspKyL8/meow-game.jpg" alt="meowup-game" width="20%">| <img src="https://i.ibb.co/tydm4jr/meow-fever.jpg" alt="meowup-fever" width="20%"> | <img src="https://i.ibb.co/fdfwZmtk/meow-blocks.jpg" alt="meow-blocks" alt="meowup-blocks" width="20%"> |
+|:---------:|:---------:|:------------:|
+| <img src="https://i.ibb.co/5gspKyL8/meow-game.jpg" alt="meowup-game" width="100%"> | <img src="https://i.ibb.co/tydm4jr/meow-fever.jpg" alt="meowup-fever" width="100%"> | <img src="https://i.ibb.co/fdfwZmtk/meow-blocks.jpg" alt="meowup-blocks" width="100%"> |
+
+</div>
+
 
 ## ⚙️ 개발 환경
 - **Unity** 2022.3.x
