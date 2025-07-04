@@ -24,9 +24,13 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float downY;
     [SerializeField] private Image gaugeTop;
     [SerializeField] private GameObject pauseButton;
-
-    [SerializeField] private Image countGaugeTop;
+    [SerializeField] private Image flag;
+    [SerializeField] private GameObject jewel;
+    private float flagPosYStep = 40f;
+    
     private VertexGradient gradient;
+
+    [SerializeField] private GameObject[] backgrounds;
 
     public int score;
     public float currentTime;
@@ -45,6 +49,7 @@ public class GameManager : Singleton<GameManager>
     private Cat _catPrefabObjScript;
     private int _currentLevel;
     private int _currentLife;
+    private bool _jewelCheck;
 
     public ConstInfo constInfo;
     private ObjectPoolManager _pool;
@@ -74,13 +79,15 @@ public class GameManager : Singleton<GameManager>
         catCount = 0;
         score = 0;
         currentTime = 0;
+        flag.rectTransform.anchoredPosition = Vector3.zero;
+        jewel.SetActive(false);
         Gradient();
 
         //game init
         scoreText.text = "점수 : " + score;
         _currentLife = _maxLife;
         gaugeTop.fillAmount = 1f;
-        downY = 0.875f;
+        downY = 0.86f;
         countObj.SetActive(false);
         comboText.gameObject.SetActive(false);
         isGameOver = false;
@@ -91,7 +98,7 @@ public class GameManager : Singleton<GameManager>
             life[i].transform.localScale = Vector3.one;
         }
 
-        floorObj.transform.position = new Vector3(0, -4.56f, 0);
+        floorObj.transform.position = new Vector3(0, 0, 0);
         Color c = floorObj.GetComponent<Renderer>().material.color;
         c.a = 1f;
         floorObj.GetComponent<Renderer>().material.color = c;
@@ -144,7 +151,6 @@ public class GameManager : Singleton<GameManager>
         if (!isGameOver)
         {
             UpdateTimeUI();
-            UpdateCountUI();
         }
     }
 
@@ -192,10 +198,10 @@ public class GameManager : Singleton<GameManager>
             int rand = Random.Range(0, 6);
             if (rand >= 3 && !_im.timeObj.activeInHierarchy)
                 _im.SpawnItem(_im.timeObj);
-            else if (rand is 2 or 1 && !_im.pointObj.activeInHierarchy)
-                _im.SpawnItem(_im.pointObj);
-            else if (rand is 0 && !_im.minusObj.activeInHierarchy)
+            else if (rand <=2 && !_im.minusObj.activeInHierarchy)
                 _im.SpawnItem(_im.minusObj);
+            // else if (rand is 2 or 1 && !_im.pointObj.activeInHierarchy)
+            //     _im.SpawnItem(_im.pointObj);
         }
         else
         {
@@ -204,7 +210,7 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public IEnumerator DownCats()
+    public IEnumerator DownCtrl()
     {
         yield return new WaitForSeconds(0.3f);
         foreach (Cat cat in cats)
@@ -212,21 +218,34 @@ public class GameManager : Singleton<GameManager>
             cat.transform.DOMoveY(cat.transform.position.y - downY, 0.3f);
         }
 
+        foreach (GameObject obj in backgrounds)
+        {
+            if(obj.transform.position.y<-10)
+                obj.transform.position = new Vector3(0, 20, 0);
+            obj.transform.DOMoveY(obj.transform.position.y - downY, 0.3f);
+        }
+
         Color c = floorObj.GetComponent<Renderer>().material.color;
         if (c.a != 0)
             floorObj.transform.DOMoveY(floorObj.transform.position.y - downY, 0.3f).OnComplete(() =>
             {
-                Color c = floorObj.GetComponent<Renderer>().material.color;
-                c.a = 0;
-                floorObj.GetComponent<Renderer>().material.color = c;
+                if (catCount > 5)
+                {
+                    Color c = floorObj.GetComponent<Renderer>().material.color;
+                    c.a = 0;
+                    floorObj.GetComponent<Renderer>().material.color = c;
+                }
+                
             });
 
         if (_im.timeObj.activeSelf)
             _im.timeObj.transform.DOMoveY(_im.timeObj.transform.position.y - downY, 0.3f);
-        if (_im.pointObj.activeSelf)
-            _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y - downY, 0.3f);
+        
         if (_im.minusObj.activeSelf)
             _im.minusObj.transform.DOMoveY(_im.minusObj.transform.position.y - downY, 0.3f);
+        
+        // if (_im.pointObj.activeSelf)
+        //     _im.pointObj.transform.DOMoveY(_im.pointObj.transform.position.y - downY, 0.3f);
 
         if (comboText.gameObject.activeSelf)
             comboText.transform.DOMoveY(comboText.transform.position.y - downY, 0.3f);
@@ -296,12 +315,12 @@ public class GameManager : Singleton<GameManager>
 
         if (ratio < 0.3f)
         {
-            gaugeTop.GetComponent<Image>().color = new Color(1f, 0f, 0f, 1f);
+            gaugeTop.GetComponent<Image>().color = new Color32(217, 87, 99, 255);
         }
 
         else
         {
-            gaugeTop.GetComponent<Image>().color = new Color32(135, 89, 172, 255);
+            gaugeTop.GetComponent<Image>().color = new Color32(250, 241, 53, 255);
         }
 
         if (ratio <= 0f)
@@ -310,12 +329,19 @@ public class GameManager : Singleton<GameManager>
         }
     }
     
-    private void UpdateCountUI()
+    public void UpdateCountUI()
     {
-        float ratio = catCount / 80f;
-        countGaugeTop.fillAmount = ratio;
+        if (flag.rectTransform.anchoredPosition.y < 280f)
+        {
+            flag.rectTransform.anchoredPosition += new Vector2(0, flagPosYStep);
+        }
         
-        countGaugeTop.GetComponent<Image>().color = new Color32(255, 153, 17, 255);
+        if (flag.rectTransform.anchoredPosition.y is 280f && !_jewelCheck)
+        {
+            _am.OnSfxPlay(5);
+            _jewelCheck = true;
+            jewel.SetActive(true);
+        }
         
     }
 
@@ -470,4 +496,5 @@ public class GameManager : Singleton<GameManager>
             tween.Kill(true);
         });
     }
+    
 }

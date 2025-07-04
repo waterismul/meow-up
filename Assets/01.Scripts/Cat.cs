@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Linq;
-using System.Net.Sockets;
 using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Pool;
+
 
 public class Cat : MonoBehaviour
 {
@@ -61,10 +57,10 @@ public class Cat : MonoBehaviour
     
     private void OnEnable()
     {
-        float camZ = Mathf.Abs(Camera.main.transform.position.z);
-        transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, camZ));
-        rightX = Camera.main.ViewportToWorldPoint(new Vector3(0.85f, 0.1f, camZ));
-        leftX = Camera.main.ViewportToWorldPoint(new Vector3(0.15f, 0.1f, camZ));
+        float camZ = Mathf.Abs(UnityEngine.Camera.main.transform.position.z);
+        transform.position = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, camZ));
+        rightX = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.85f, 0.1f, camZ));
+        leftX = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.15f, 0.1f, camZ));
     }
 
 
@@ -72,16 +68,6 @@ public class Cat : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         sr.sortingOrder = 8;
-        
-        // swappingTween = transform.DOMoveX(rightX.x, dur/2)
-        //     .SetEase(Ease.Linear).OnComplete(() =>
-        //     {
-        //         swappingTween = transform.DOMoveX(leftX.x, dur)
-        //             .SetEase(Ease.Linear)
-        //             .SetLoops(-1, LoopType.Yoyo)
-        //             .From(rightX.x);
-        //
-        //     });
         
         swappingTween = transform.DOMoveX(rightX.x, dur/2)
             .SetEase(Ease.Linear)
@@ -129,13 +115,15 @@ public class Cat : MonoBehaviour
             
             gm.CountCat(gameObject);
             
+            gm.UpdateCountUI();
+            
             gm.ComboInit(gameObject);
             
             UpdateCatColliders();
 
             if (gm.cats.Count > 4)
             {
-                StartCoroutine(gm.DownCats());
+                StartCoroutine(gm.DownCtrl());
             }
 
             OnNextCatCallback?.Invoke();
@@ -161,11 +149,11 @@ public class Cat : MonoBehaviour
         {
             gm._im.GetItemTime();
         }
-        
-        if (other.CompareTag("ItemPoint") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
-        {
-            gm._im.GetItemPoint();
-        }
+        //
+        // if (other.CompareTag("ItemPoint") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
+        // {
+        //     gm._im.GetItemPoint();
+        // }
         
         if (other.CompareTag("ItemMinus") && animator.GetCurrentAnimatorStateInfo(0).IsName("Land"))
         {

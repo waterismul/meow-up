@@ -8,7 +8,7 @@ public class FeverButton : MonoBehaviour
 {
     private GameManager gm;
     private AudioManager am;
-    private int pointBonus=10;
+    private int pointBonus=100;
     
     public void FeverTimeGetItem()
     {

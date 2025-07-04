@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class ItemManager : MonoBehaviour
 {
     public GameObject timeObj;
-    public GameObject pointObj;
+    //public GameObject pointObj;
     public GameObject minusObj;
 
-    [SerializeField] private float timeBonus = 10f;
-    [SerializeField] private int pointBonus = 10;
-    [SerializeField] private int pointMinus = 20;
+    [SerializeField] private float timeBonus = 20f;
+    //[SerializeField] private int pointBonus = 10;
+    [SerializeField] private int pointMinus = 200;
 
 
     private GameManager gm;
@@ -29,10 +29,12 @@ public class ItemManager : MonoBehaviour
         
         timeObj.SetActive(false);
         timeObj.transform.localScale = Vector3.zero;
-        pointObj.SetActive(false);
-        pointObj.transform.localScale = Vector3.zero;
+       
         minusObj.SetActive(false);
         minusObj.transform.localScale = Vector3.zero;
+        
+        // pointObj.SetActive(false);
+        // pointObj.transform.localScale = Vector3.zero;
     }
     
     public void SpawnItem(GameObject itemObj)
@@ -47,13 +49,13 @@ public class ItemManager : MonoBehaviour
         
     }
 
-    public void GetItemPoint()
-    {
-        am.OnItemPlay(0);
-        gm.score += pointBonus;
-        gm.scoreText.text = "점수 : "+gm.score;
-        OffItemTime(pointObj);
-    }
+    // public void GetItemPoint()
+    // {
+    //     am.OnItemPlay(0);
+    //     gm.score += pointBonus;
+    //     gm.scoreText.text = "점수 : "+gm.score;
+    //     OffItemTime(pointObj);
+    // }
     
    
     
@@ -68,6 +70,8 @@ public class ItemManager : MonoBehaviour
     {
         am.OnItemPlay(2);
         gm.score -= pointMinus;
+        if (gm.score <= 0)
+            gm.score = 0;
         gm.scoreText.text = "점수 : "+gm.score;
         OffItemTime(minusObj);
     }
