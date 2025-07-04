@@ -85,7 +85,8 @@ public class UIManager : Singleton<UIManager>
 
         Animator animator = overCat.GetComponent<Animator>();
         animator.updateMode = AnimatorUpdateMode.UnscaledTime;
-        animator.SetTrigger("Over");
+        int selectedIndex = PlayerPrefs.GetInt("selectedCatIndex");
+        animator.SetTrigger("Over_"+selectedIndex);
         am.OnBgmPlay(2);
 
     }
