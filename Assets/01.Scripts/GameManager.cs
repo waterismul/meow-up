@@ -87,7 +87,7 @@ public class GameManager : Singleton<GameManager>
         scoreText.text = "점수 : " + score;
         _currentLife = _maxLife;
         gaugeTop.fillAmount = 1f;
-        downY = 0.86f;
+        downY = 1f;
         countObj.SetActive(false);
         comboText.gameObject.SetActive(false);
         isGameOver = false;

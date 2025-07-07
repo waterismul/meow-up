@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Cat : MonoBehaviour
 {
-    [SerializeField] private float posX = 2.3f;
-    [SerializeField] private float posY = -4.45f;
     [SerializeField] private float jumpSpeed = 0.5f;
     
     private Animator animator;
@@ -58,9 +56,9 @@ public class Cat : MonoBehaviour
     private void OnEnable()
     {
         float camZ = Mathf.Abs(UnityEngine.Camera.main.transform.position.z);
-        transform.position = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, camZ));
-        rightX = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.85f, 0.1f, camZ));
-        leftX = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.15f, 0.1f, camZ));
+        transform.position = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.15f, camZ));
+        rightX = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.85f, 0.15f, camZ));
+        leftX = UnityEngine.Camera.main.ViewportToWorldPoint(new Vector3(0.15f, 0.15f, camZ));
     }
 
 
@@ -121,7 +119,7 @@ public class Cat : MonoBehaviour
             
             UpdateCatColliders();
 
-            if (gm.cats.Count > 4)
+            if (gm.cats.Count > 3)
             {
                 StartCoroutine(gm.DownCtrl());
             }

@@ -40,11 +40,31 @@ public class ItemManager : MonoBehaviour
     public void SpawnItem(GameObject itemObj)
     {
         am.OnSfxPlay(2);
-        var pointX = Random.Range(-1, 2);
+        float pointL = -1.5f;
+        float pointC = 0;
+        float pointR = 1.5f;
+        int rand = Random.Range(0, 3);
+        
+        float pointX = 0f;
+        
+        switch (rand)
+        {
+            case 0:
+                pointX = pointL;
+                break;
+            case 1:
+                pointX = pointC;
+                break;
+            case 2:
+                pointX = pointR;
+                break;
+        }
+        
+        
         if (itemObj.name == "minus item")
             pointX = 0;
         itemObj.SetActive(true);
-        itemObj.transform.position =  new Vector3(pointX, 2f, transform.position.z);
+        itemObj.transform.position =  new Vector3(pointX, 1f, transform.position.z);
         itemObj.transform.DOScale(1f, 0.5f);
         
     }
