@@ -200,24 +200,25 @@ public class GameManager : Singleton<GameManager>
     private void SpawnItem()
     {
         if (catCount == 0) return;
-        if (catCount % 4 == 0 && !hasSpawnedThisRound)
+        if (catCount % 5 == 0 && !hasSpawnedThisRound)
         {
             hasSpawnedThisRound = true;
             int rand = Random.Range(0, 6);
-            if (rand >= 3 && !_im.timeObj.activeInHierarchy)
+            if (rand >= 1)
+            {
                 _im.SpawnItem(_im.timeObj);
-            else if (rand <=2 && !_im.minusObj.activeInHierarchy)
+            }
+            
+            else if (rand is 0)
                 _im.SpawnItem(_im.minusObj);
-            // else if (rand is 2 or 1 && !_im.pointObj.activeInHierarchy)
-            //     _im.SpawnItem(_im.pointObj);
+            
         }
         else
         {
             hasSpawnedThisRound = false;
         }
     }
-
-
+    
     public IEnumerator DownCtrl()
     {
         yield return new WaitForSeconds(0.3f);

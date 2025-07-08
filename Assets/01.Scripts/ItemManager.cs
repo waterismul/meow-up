@@ -40,9 +40,9 @@ public class ItemManager : MonoBehaviour
     public void SpawnItem(GameObject itemObj)
     {
         am.OnSfxPlay(2);
-        float pointL = -1.5f;
+        float pointL = -1f;
         float pointC = 0;
-        float pointR = 1.5f;
+        float pointR = 1f;
         int rand = Random.Range(0, 3);
         
         float pointX = 0f;
@@ -64,10 +64,10 @@ public class ItemManager : MonoBehaviour
         if (itemObj.name == "minus item")
             pointX = 0;
         itemObj.SetActive(true);
-        itemObj.transform.position =  new Vector3(pointX, 1f, transform.position.z);
-        itemObj.transform.DOScale(1f, 0.5f);
-        
+        itemObj.transform.position =  new Vector3(pointX, 2.5f, transform.position.z);
+        itemObj.transform.DOScale(0.7f, 0.5f);
     }
+    
 
     // public void GetItemPoint()
     // {
