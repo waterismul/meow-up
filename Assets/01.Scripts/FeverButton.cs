@@ -17,8 +17,7 @@ public class FeverButton : MonoBehaviour
         am = AudioManager.Instance;
         
         am.OnItemPlay(0);
-        gm.score += pointBonus;
-        gm.scoreText.text = "점수 : "+gm.score;
+        gm.feverCount++;
         
         pointText.gameObject.SetActive(true);
         gameObject.GetComponent<Button>().interactable = false;

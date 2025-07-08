@@ -44,6 +44,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private TextMeshProUGUI bestText;
     public TextMeshProUGUI feverTimeTitle;
 
+    [SerializeField] private TextMeshPro feverCountText;
+
     //game
     private int _maxLife = 5;
     private float _maxTime = 600;
@@ -63,6 +65,7 @@ public class GameManager : Singleton<GameManager>
     private int bestscore;
     public int comboCount;
     public int comboCountReal;
+    public int feverCount;
 
     private void Start()
     {
@@ -84,6 +87,8 @@ public class GameManager : Singleton<GameManager>
         flag.rectTransform.anchoredPosition = Vector3.zero;
         jewel.SetActive(false);
         Gradient();
+        feverCountText.gameObject.SetActive(false);
+        feverCount = 0;
 
         //game init
         scoreText.text = "점수 : " + score;
@@ -450,7 +455,6 @@ public class GameManager : Singleton<GameManager>
             pauseButton.gameObject.SetActive(false);
             
             comboText.text = "콤보 맥스";
-            var pos = currentCat.transform.position;
             
             DOVirtual.DelayedCall(0.5f, () =>
             {
@@ -460,17 +464,18 @@ public class GameManager : Singleton<GameManager>
                 animator.updateMode = AnimatorUpdateMode.UnscaledTime;
                 animator.SetTrigger("Fever");
                 _am.OnSfxPlay(3);
+                var pos = currentCat.transform.position;
 
+                //고양이 오른쪽으로 이동
                 currentCat.transform.DOMoveX(4f, 2.5f).SetUpdate(true).OnComplete(() =>
                 {
-                    currentCat.transform.position = new Vector3(-2.3f, currentCat.transform.position.y,
-                        currentCat.transform.position.z);
-                    currentCat.transform.DOMoveX(pos.x, 1f).SetUpdate(true).OnComplete(() =>
-                    {
-                        _am.OnSfxStop();
-                        animator.SetTrigger("Land");
-                    });
+                    _am.OnSfxStop();
                     OnFeverTime();
+                    DOVirtual.DelayedCall(5f, () =>
+                    {
+                        EndFeverTime(currentCat, pos);
+                    });
+                    
                 });
             });
         }
@@ -478,8 +483,49 @@ public class GameManager : Singleton<GameManager>
         {
             comboText.text = $"콤보 {comboCountReal}";
         }
+        
+    }
 
-       
+    private void EndFeverTime(GameObject currentCat,  Vector3 pos)
+    {
+        _um.CloseFeverPanel();
+        
+        Animator animator = currentCat.GetComponent<Animator>();
+        currentCat.transform.position = new Vector3(-2.3f, currentCat.transform.position.y,
+            currentCat.transform.position.z);
+        currentCat.transform.DOMoveX(pos.x, 1f).SetUpdate(true).OnComplete(() =>
+        {
+            _am.OnSfxStop();
+            animator.SetTrigger("Land");
+            feverCountText.gameObject.SetActive(true);
+            feverCountText.transform.localScale = Vector3.one*5;
+            feverCountText.transform.position = Vector3.zero;
+            feverCountText.text = $"+{feverCount*100}";
+            
+            Gradient();
+            feverCountText.colorGradient = gradient;
+            feverCountText.enableVertexGradient = true;
+            
+            Sequence seq = DOTween.Sequence();
+            seq.Join(feverCountText.transform.DOMoveY(4.2f, 0.5f));
+            seq.Join(feverCountText.transform.DOScale(Vector3.zero, 0.5f)).OnComplete(() =>
+            {
+                feverCountText.gameObject.SetActive(false);
+                score+=feverCount*100;
+                scoreText.text = "점수 : " + score;
+                feverCount = 0;
+            });
+           
+        });
+        
+        
+        DOVirtual.DelayedCall(2f, () =>
+        {
+            Time.timeScale = 1f;
+            _am.OnBgmPlay(3);
+            pauseButton.gameObject.SetActive(true);
+        });
+        
     }
 
     public void ComboReset()
@@ -517,12 +563,10 @@ public class GameManager : Singleton<GameManager>
 
         DOVirtual.DelayedCall(5f, () =>
         {
-            _um.CloseFeverPanel();
-            Time.timeScale = 1f;
-            _am.OnBgmPlay(3);
-            pauseButton.gameObject.SetActive(true);
             tween.Kill(true);
         });
     }
+    
+    
     
 }
