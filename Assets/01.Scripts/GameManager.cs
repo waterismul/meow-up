@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject pauseButton;
     [SerializeField] private Image flag;
     [SerializeField] private GameObject jewel;
-    private float flagPosYStep = 40f;
+    private float flagPosYStep = 4f;
 
     [SerializeField] private TextMeshProUGUI overCountText;
     
@@ -232,7 +232,7 @@ public class GameManager : Singleton<GameManager>
         if (c.a != 0)
             floorObj.transform.DOMoveY(floorObj.transform.position.y - downY, 0.3f).OnComplete(() =>
             {
-                if (catCount > 5)
+                if (catCount > 3)
                 {
                     Color c = floorObj.GetComponent<Renderer>().material.color;
                     c.a = 0;
@@ -437,6 +437,7 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
         
+        comboText.transform.localScale = Vector3.one;
         comboText.transform.position = currentCat.transform.position;
         comboText.gameObject.SetActive(true);
         DOVirtual.DelayedCall(0.5f, () =>
@@ -451,7 +452,9 @@ public class GameManager : Singleton<GameManager>
             comboText.color = Color.white;
             comboText.colorGradient = gradient;
             comboText.enableVertexGradient = true;
-            
+
+
+            comboText.transform.DOScale(3, 0.5f);
             pauseButton.gameObject.SetActive(false);
             
             comboText.text = "콤보 맥스";
@@ -514,6 +517,7 @@ public class GameManager : Singleton<GameManager>
                 score+=feverCount*100;
                 scoreText.text = "점수 : " + score;
                 feverCount = 0;
+                _am.OnItemPlay(3);
             });
            
         });
