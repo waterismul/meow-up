@@ -9,6 +9,7 @@ public class FeverButton : MonoBehaviour
     private GameManager gm;
     private AudioManager am;
     private int pointBonus=100;
+    [SerializeField] private TextMeshProUGUI pointText;
     
     public void FeverTimeGetItem()
     {
@@ -19,12 +20,14 @@ public class FeverButton : MonoBehaviour
         gm.score += pointBonus;
         gm.scoreText.text = "점수 : "+gm.score;
         
+        pointText.gameObject.SetActive(true);
         gameObject.GetComponent<Button>().interactable = false;
 
     }
 
     private void OnEnable()
     {
+        pointText.gameObject.SetActive(false);
         gameObject.GetComponent<Button>().interactable = true;
     }
 }

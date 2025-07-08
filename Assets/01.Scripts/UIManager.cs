@@ -102,7 +102,12 @@ public class UIManager : Singleton<UIManager>
 
     public void CloseFeverPanel()
     {
-        _feverPanel.SetActive(false);
+        var pos = _feverPanel.GetComponent<RectTransform>();
+        pos.DOAnchorPos(new Vector2(1100f,0f), 1.5f)
+            .SetEase(Ease.OutQuad).SetUpdate(true).OnComplete(() =>
+            {
+                _feverPanel.SetActive(false);
+            });
     }
 
     public void OpenShopPanel()

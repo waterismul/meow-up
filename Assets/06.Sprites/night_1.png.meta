@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 112eaae4660a78f4298a47af708ab88b
+guid: 2f7691c3389dfdc4691dfcb385442c40
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6470338403938043065
-    second: clock 3_0
+      213: -3857426490429432294
+    second: night_1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 44
+  spritePixelsToUnits: 12
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,17 +109,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: clock 3_0
+      name: night_1_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 8
-        width: 20
-        height: 20
+        x: 0
+        y: 0
+        width: 85
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 74b74b0c08db436a0800000000000000
-      internalID: -6470338403938043065
+      spriteID: a1e95c26b0ba77ac0800000000000000
+      internalID: -3857426490429432294
       vertices: []
       indices: 
       edges: []
@@ -148,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      clock 3_0: -6470338403938043065
+      night_1_0: -3857426490429432294
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -27,6 +27,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private Image flag;
     [SerializeField] private GameObject jewel;
     private float flagPosYStep = 40f;
+
+    [SerializeField] private TextMeshProUGUI overCountText;
     
     private VertexGradient gradient;
 
@@ -44,7 +46,7 @@ public class GameManager : Singleton<GameManager>
 
     //game
     private int _maxLife = 5;
-    private float _maxTime = 60;
+    private float _maxTime = 600;
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private int _currentLevel;
@@ -91,6 +93,7 @@ public class GameManager : Singleton<GameManager>
         countObj.SetActive(false);
         comboText.gameObject.SetActive(false);
         isGameOver = false;
+        InitBackground();
 
 
         for (int i = 0; i < _maxLife; i++)
@@ -218,12 +221,7 @@ public class GameManager : Singleton<GameManager>
             cat.transform.DOMoveY(cat.transform.position.y - downY, 0.3f);
         }
 
-        foreach (GameObject obj in backgrounds)
-        {
-            if(obj.transform.position.y<-10)
-                obj.transform.position = new Vector3(0, 20, 0);
-            obj.transform.DOMoveY(obj.transform.position.y - downY, 0.3f);
-        }
+        BackgroundCtrl();
 
         Color c = floorObj.GetComponent<Renderer>().material.color;
         if (c.a != 0)
@@ -254,6 +252,29 @@ public class GameManager : Singleton<GameManager>
             countObj.transform.DOMoveY(countObj.transform.position.y - downY, 0.3f);
     }
 
+    private void BackgroundCtrl()
+    {
+        foreach (GameObject obj in backgrounds)
+        {
+            for (int i = 7; i < backgrounds.Length; i++)
+            {
+                if (backgrounds[i].transform.position.y < -10)
+                    backgrounds[i].transform.position = new Vector3(0, 19, 0);
+            }
+            
+            obj.transform.DOMoveY(obj.transform.position.y - downY, 0.3f);
+        }
+        
+    }
+
+    private void InitBackground()
+    {
+        for(int i = 0; i < backgrounds.Length; i++)
+        {
+            backgrounds[i].transform.position = new Vector3(0, i * 10, 0);
+        }
+    }
+
     private void GameOver()
     {
         isGameOver = true;
@@ -265,7 +286,14 @@ public class GameManager : Singleton<GameManager>
         PlayerPrefs.SetInt("bestscore", result);
         PlayerPrefs.Save();
         bestText.text = PlayerPrefs.GetInt("bestscore").ToString();
+        overCountText.text = catCount.ToString();
+
+        DOVirtual.DelayedCall(4f, () =>
+        {
+            overCountText.text = "zzz";
+        });
     }
+    
 
     public void CountCat(GameObject currentCat)
     {
@@ -465,10 +493,10 @@ public class GameManager : Singleton<GameManager>
     {
         // Gradient 생성
         gradient = new VertexGradient(
-            new Color32(200, 75, 75, 255), // topLeft (밝은 빨강)
-            new Color32(255, 212, 9, 255), // topRight (밝은 주황)
-            new Color32(90, 170, 108, 255), // bottomLeft (하늘색)
-            new Color32(90, 172, 255, 255)
+            new Color32(255, 0, 0, 255), // topLeft (밝은 빨강)
+            new Color32(255, 255, 0, 255), // topRight (밝은 주황)
+            new Color32(0, 255, 0, 255), // bottomLeft (하늘색)
+            new Color32(0, 0 , 255, 255)
         );
     }
 
