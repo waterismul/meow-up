@@ -48,7 +48,7 @@ public class GameManager : Singleton<GameManager>
 
     //game
     private int _maxLife = 5;
-    private float _maxTime = 600;
+    private float _maxTime = 60;
     private GameObject _catPrefabObj;
     private Cat _catPrefabObjScript;
     private int _currentLevel;
